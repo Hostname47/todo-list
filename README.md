@@ -1,3 +1,5 @@
-# My first react application
+# Todo list
 
-I create this todo-list application in react to practice every concept I learned as a way to learn by doing.
+This is my first project in react, where I want to implement as much react concepts as possible. Also, I want to practice the advanced concepts as well including HOCs, Render optimization and hooks.
+
+If you find something wrong here or you want to contribute you're very welcome ;)
