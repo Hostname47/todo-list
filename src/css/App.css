@@ -2,15 +2,30 @@
   width: 560px;
   display: flex;
   flex-direction: column;
-  margin: 0 auto;
-  background-color: #ebf0f4;
   border-radius: 4px;
-  border: 1px solid #cbd5dd;
-  padding: 24px;
+  margin: 16px auto;
+  background-color: #f9f9f9;
+  border: 1px solid #d8dfe8;
 }
 
 .todo-item-container {
   display: flex;
   align-items: center;
   gap: 6px;
+  padding: 8px;
 }
+
+.todo-item-container .content {
+  margin: 0;
+  text-overflow: ellipsis;
+  overflow: hidden; 
+  width: 300px;
+  height: 1.2em; 
+  white-space: nowrap;
+}
+
+.todo-item-container .mark-task-as-done-checkbox {
+  width: 15px;
+  height: 15px;
+}
+

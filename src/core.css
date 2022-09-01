@@ -1,6 +1,8 @@
 body {
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  color: #111213;
 }
 
 header {
@@ -13,17 +15,36 @@ header {
 
 header h1 {
   color: #39a2ff;
+  margin-bottom: 14px;
+}
+
+button {
+  background-color: unset;
+  border: unset;
+  cursor: pointer;
 }
 
 .button-style-1 {
-  padding: 12px 16px;
-  background-color: #e1ebf2;
-  border: 1px solid #99b0bb;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 14px;
+  border: 1px solid #adb9bf;
+  color: rgb(20, 20, 20);
+  fill: rgb(20, 20, 20);
   border-radius: 3px;
-  cursor: pointer;
 }
 .button-style-1:hover {
-  background-color: #cfdbe4;
+  background-color: #f2f4f7;
+}
+.button-style-1:disabled,
+.button-style-1[disabled] {
+  cursor: default !important;
+  background-color: #f7f7f7 !important;
+}
+
+.button-style-2 {
+  
 }
 
 .text-center {
