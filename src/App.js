@@ -13,7 +13,7 @@ import CreateTaskModal from "./modals/CreateTaskModal";
  * component in order to be able to open and close the targeted modal
  */
 const modalsInitialState = {
-  createTask: false
+  createTask: true
 }
 const modalsReducer = (state, action) => {
   switch(action.type) {

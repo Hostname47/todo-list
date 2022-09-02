@@ -19,16 +19,45 @@ header h1 {
 }
 
 button {
+  font-family: Arial, Helvetica, sans-serif;
   background-color: unset;
   border: unset;
   padding: 0;
   cursor: pointer;
 }
 
+label {
+  display: flex;
+}
+
+.label-style-1 {
+  font-size: 14px;
+  font-weight: bold;
+  color: #1d2024;
+  margin-bottom: 4px;
+}
+
+
+.input-style-1 {
+  outline: none;
+  display: flex;
+  padding: 8px;
+  margin: 0;
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 3px;
+  border: 1px solid rgb(194, 202, 206);
+}
+
+.input-style-1:focus {
+  border-color: #1198ff;
+  outline: 3px solid #1198ff40;
+}
+
 .button-style-1 {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   padding: 8px 14px;
   border: 1px solid #adb9bf;
   color: rgb(20, 20, 20);
@@ -52,6 +81,10 @@ button {
   position: relative;
 }
 
+.none {
+  display: none;
+}
+
 .flex {
   display: flex;
 }
@@ -67,12 +100,53 @@ button {
   justify-content: center;
 }
 
+.size12 { width: 12px; height: 12px; }
+.size14 { width: 14px; height: 14px; }
+
+.mb8 {
+  margin-bottom: 8px;
+}
+
+.g6 { gap: 6px; }
+.g8 { gap: 8px; }
+
+.move-to-right {
+  margin-left: auto;
+}
+
 .absolute-full-screen {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
+}
+
+.text-info-section {
+  display: flex;
+  gap: 4px;
+  padding: 8px 12px;
+  margin-bottom: 12px;
+  background-color: #f0f3f4;
+  border: 1px solid #ccd9dd;
+  border-radius: 4px;
+}
+
+.text-info-section .icon {
+  width: 16px;
+  height: 16px;
+}
+.text-info-section .text {
+  font-size: 13px;
+  font-weight: bold;
+}
+
+/* error text info section */
+.text-info-section.error {
+  border-color: #d7a2a2;
+  background-color: #ffefef;
+  color: #602020;
+  fill: #602020;
 }
 
 .modal-overlay {
@@ -116,3 +190,19 @@ button {
   background-color: white;
   border-radius: 3px;
 }
+
+.rotate {
+  animation: spin 1.4s linear infinite;
+  -webkit-animation: spin 1.4s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: none }
+  to { transform: rotate(360deg) }
+}
+
+@-webkit-keyframes spin {
+  from { -webkit-transform: none }
+  to { -webkit-transform: rotate(360deg) }
+}
+
