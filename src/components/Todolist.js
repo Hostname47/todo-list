@@ -1,7 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Task from './Task'
+import { MessagesContext } from '../App'
 
 function Todolist() {
+  const messagesContext = useContext(MessagesContext)
+
   const [list, setList] = useState([])
   const [loading, setLoading] = useState(true)
 
@@ -11,13 +14,30 @@ function Todolist() {
   useEffect(() => {
     // Set loading to false when data fetched or when an error occured while fetching
     setLoading(false)
-    // Let's hard coding the list data
-    setList([
-      { id: 1, content: "I'm going to kick your ass next time you use class component", done: false },
-      { id: 2, content: "I have to get a job by the end of 2022", done: false },
-      { id: 3, content: "I should learn redux for state management even though lot of people hate it", done: false },
-      { id: 4, content: "I have to train today", done: true },
-    ]);
+
+    const request = indexedDB.open('todos', 1)
+
+    request.onerror = function (event) {
+      messagesContext.dispatch({ type: 'error', value: 'Tasks fetching went wrong for some reason' })
+    };    
+
+    request.onupgradeneeded = function () {
+      const db = request.result;
+      const store = db.createObjectStore("tasks", { keyPath: "id", autoIncrement: true });
+      store.createIndex("done_tasks", ["done"], { unique: false });
+    };
+
+    request.onsuccess = function() {
+      const db = request.result;
+      const transaction = db.transaction("tasks", 'readonly');
+
+      const store = transaction.objectStore("tasks");
+      const dataRequest = store.getAll()
+
+      dataRequest.onsuccess = () => {
+        setList(dataRequest.result)
+      }
+    }
   }, [])
 
   return (
@@ -25,8 +45,9 @@ function Todolist() {
       {
         loading 
           ?
-            <div>
-              loading..
+            <div className='full-center align-center g6 my8'>
+              <svg className="spinner size14 rotate" fill="none" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" stroke="currentColor" strokeOpacity="0.25" strokeWidth="2" vectorEffect="non-scaling-stroke"></circle><path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" vectorEffect="non-scaling-stroke"></path></svg>
+              <span>fetching tasks..</span>
             </div>
           : 
             <div id='todo-items-box'>

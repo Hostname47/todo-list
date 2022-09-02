@@ -60,8 +60,14 @@ function CreateTaskModal() {
       const store = transaction.objectStore("tasks");
       store.put({ title, notes });
 
-      // After storing the task to indexedDB we need to display a message to user and close the modal
+      /**
+       * After storing the task to indexedDB we need to:
+       * 1. display a message to user about new task created
+       * 2. refresh list in Todolist component
+       * 3. close the create task modal
+       */
       messagesContext.dispatch({ type: 'success', value: 'Task has been created successfully' })
+
       modalsContext.dispatch({ type: 'createTaskSwitch', value: false })
     }
   }

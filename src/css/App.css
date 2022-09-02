@@ -6,6 +6,8 @@
   margin: 16px auto;
   background-color: #f9f9f9;
   border: 1px solid #d8dfe8;
+  overflow-y: auto;
+  max-height: 380px;
 }
 
 .todo-item-container {

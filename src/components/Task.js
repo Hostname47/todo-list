@@ -15,7 +15,7 @@ function Task({ item }) {
         <button className='edit'></button>
         <button className='delete'></button>
       </div>
-      <p className="content">{ item.content }</p>
+      <p className="content">{ item.title }</p>
     </div>
   )
 }

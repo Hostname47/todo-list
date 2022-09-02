@@ -103,6 +103,7 @@ label {
 .size12 { width: 12px; height: 12px; }
 .size14 { width: 14px; height: 14px; }
 
+.my8 { margin-top: 8px; margin-bottom: 8px; }
 .mb8 {
   margin-bottom: 8px;
 }
@@ -127,7 +128,7 @@ label {
   display: flex;
   gap: 4px;
   padding: 8px 28px 8px 12px;
-  margin: 12px;
+  margin-bottom: 12px;
   background-color: #f0f3f4;
   border: 1px solid #ccd9dd;
   border-radius: 4px;
@@ -155,7 +156,6 @@ label {
 .text-info-section .close .x {
   width: 10px;
   height: 10px;
-
 }
 
 /* error text info section */
@@ -212,6 +212,7 @@ label {
   width: 600px;
   background-color: white;
   border-radius: 3px;
+  margin-top: -26px;
 }
 
 .rotate {
