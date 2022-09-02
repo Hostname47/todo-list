@@ -123,10 +123,11 @@ label {
 }
 
 .text-info-section {
+  position: relative;
   display: flex;
   gap: 4px;
-  padding: 8px 12px;
-  margin-bottom: 12px;
+  padding: 8px 28px 8px 12px;
+  margin: 12px;
   background-color: #f0f3f4;
   border: 1px solid #ccd9dd;
   border-radius: 4px;
@@ -140,6 +141,22 @@ label {
   font-size: 13px;
   font-weight: bold;
 }
+.text-info-section .close {
+  display: flex;
+  position: absolute;
+  right: 6px;
+  top: 6px;
+  padding: 6px;
+  border-radius: 50%;
+}
+.text-info-section .close:hover {
+  background-color: #1d20242e;
+}
+.text-info-section .close .x {
+  width: 10px;
+  height: 10px;
+
+}
 
 /* error text info section */
 .text-info-section.error {
@@ -147,6 +164,12 @@ label {
   background-color: #ffefef;
   color: #602020;
   fill: #602020;
+}
+.text-info-section.success {
+  border-color: #b9ddc7;
+  background-color: #ddf9e4;
+  color: #21592f;
+  fill: #21592f;
 }
 
 .modal-overlay {

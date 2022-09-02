@@ -1,11 +1,13 @@
 import React, { useContext, useRef, useState } from 'react'
 import * as ReactDOM from 'react-dom';
 import { ModalsContext } from '../App';
+import { MessagesContext } from '../App';
 import useInput from '../hooks/useInput';
 
 function CreateTaskModal() {
   // Consum Modals Context provided from the root App component to control all the modals switches
   const modalsContext = useContext(ModalsContext)
+  const messagesContext = useContext(MessagesContext)
   const createButtonRef = useRef(null)
   // State (useInput is a custom hook)
   const [error, setError] = useState('')
@@ -21,7 +23,7 @@ function CreateTaskModal() {
     if(title === '') {
       setError('Task title field is required')
       return;
-    } else if(title.length > 20) {
+    } else if(title.length > 40) {
       setError('Task title is too long')
       return;
     } else if(notes.length > 40) {
@@ -38,7 +40,30 @@ function CreateTaskModal() {
     spinner.classList.remove('none')
     createButton.disabled = true
 
-    // Store task in IndexedDB (soon)
+    // --- Store task (in IndexedDB) ---
+    const request = indexedDB.open('todos', 1)
+
+    request.onerror = function (event) {
+      setError('Oops something went wrong ! please try again or refresh your browser')
+    };    
+
+    request.onupgradeneeded = function () {
+      const db = request.result;
+      const store = db.createObjectStore("tasks", { keyPath: "id", autoIncrement: true });
+      store.createIndex("done_tasks", ["done"], { unique: false });
+    };
+
+    request.onsuccess = function() {
+      const db = request.result;
+      const transaction = db.transaction("tasks", "readwrite");
+
+      const store = transaction.objectStore("tasks");
+      store.put({ title, notes });
+
+      // After storing the task to indexedDB we need to display a message to user and close the modal
+      messagesContext.dispatch({ type: 'success', value: 'Task has been created successfully' })
+      modalsContext.dispatch({ type: 'createTaskSwitch', value: false })
+    }
   }
 
   return ReactDOM.createPortal((
