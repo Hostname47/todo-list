@@ -6,16 +6,28 @@ body {
 }
 
 header {
-  padding: 28px 0;
   background-color: #eff5fb;
   display: flex;
-  flex-direction: column;
   align-items: center;
+  padding: 0 16px;
+  height: 56px;
+  border-bottom: 1px solid #CBDEF2;
 }
 
-header h1 {
-  color: #39a2ff;
-  margin-bottom: 14px;
+#logo-title {
+  font-size: 18px;
+  color: #1a94ff;
+  margin: 0;
+}
+
+#logo-icon {
+  width: 16px;
+  height: 16px;
+  padding: 9px 9px;
+  background-color: #E2F1FF;
+  border: 1px solid #3497EE;
+  border-radius: 50%;
+  margin-right: 8px;
 }
 
 button {
@@ -32,6 +44,19 @@ input[type=checkbox] {
 label {
   display: flex;
 }
+
+.no-underline {
+  text-decoration: none;
+}
+
+.no-margin {
+  margin: 0;
+}
+
+.bold { font-weight: bold; }
+
+.fs11 { font-size: 11px; }
+.fs12 { font-size: 12px; }
 
 .label-style-1 {
   font-size: 14px;
@@ -145,9 +170,9 @@ label {
 .size16 { width: 16px; height: 16px; }
 
 .my8 { margin-top: 8px; margin-bottom: 8px; }
-.mb8 {
-  margin-bottom: 8px;
-}
+.mb8 { margin-bottom: 8px; }
+.ml6 { margin-left: 6px; }
+.ml2 { margin-left: 2px; }
 
 .g6 { gap: 6px; }
 .g8 { gap: 8px; }
@@ -219,10 +244,6 @@ label {
 
 .modal-overlay {
   background-color: #1d2124a8;
-}
-
-.modal-box {
-  
 }
 
 .modal-box .title {
