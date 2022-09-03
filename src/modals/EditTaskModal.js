@@ -11,8 +11,8 @@ function EditTaskModal({ todolistDispatch }) {
 
   const [error, setError] = useState('')
   const [done, setDone] = useState(item.done)
-  const [title, titleBind] = useInput(item.title)
-  const [notes, notesBind] = useInput(item.notes)
+  const [title, titleBind, resetTitle] = useInput(item.title)
+  const [notes, notesBind, resetNotes] = useInput(item.notes)
 
   const handleEditTaskModalClose = () => {
     modalsContext.dispatch({ type: 'editTaskSwitch', value: false })
@@ -87,7 +87,11 @@ function EditTaskModal({ todolistDispatch }) {
 
   const handleRestore = e => {
     e.preventDefault()
-    console.log('restoring..')
+    
+    setError('')
+    setDone(item.done)
+    resetTitle()
+    resetNotes()
   }
 
   return ReactDOM.createPortal((
