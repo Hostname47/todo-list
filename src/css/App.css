@@ -1,5 +1,5 @@
 #todo-items-box {
-  width: 560px;
+  width: 600px;
   display: flex;
   flex-direction: column;
   border-radius: 4px;
@@ -7,13 +7,27 @@
   background-color: #f9f9f9;
   border: 1px solid #bdc7d5;
   overflow-y: auto;
+  overflow-x: hidden;
   max-height: 380px;
+  box-sizing: border-box;
 }
 
 .todo-item-container {
+  position: relative;
   display: flex;
   align-items: flex-start;
   border-bottom: 1px solid #bdc7d5;
+  width: 100%;
+}
+
+.todo-item-container .delete-container {
+  display: flex;
+  align-items: center;
+  font-size: 11px;
+  background-color: #464e59;
+  color: white;
+  margin-left: -159px;
+  transition: margin-left 0.2s ease;
 }
 
 .todo-item-container .content-box {

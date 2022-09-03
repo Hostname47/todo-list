@@ -56,7 +56,7 @@ function Todolist() {
             <div id='todo-items-box'>
               { state.tasks.length
                 ? state.tasks.map(item => (
-                    <Task key={ item.id } item={ item } />
+                    <Task key={ item.id } item={ item } todolistDispatch={ todolistContext.dispatch } />
                   )
                 )
                 : <p>There's no tasks to be done</p>

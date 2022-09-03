@@ -94,6 +94,24 @@ label {
   background-color: #e2e6ec;
 }
 
+.flat-button-style {
+  color: white;
+  padding: 8px 12px;
+  background-color: #25282c;
+  transition: all 0.2s ease;
+  font-size: 11px;
+  font-weight: bold;
+}
+.flat-button-style:hover {
+  background-color: #49515c;
+}
+.flat-button-style.red {
+  background-color: #d83737;;
+}
+.flat-button-style.red:hover {
+  background-color: #F95555;
+}
+
 .text-center {
   text-align: center;
 }
