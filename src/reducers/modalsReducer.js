@@ -9,15 +9,16 @@
  */
 const modalsInitialState = {
   createTask: false,
-  updateTask: false,
+  editTask: false,
   deleteTask: false,
+  item: {}
 }
 const modalsReducer = (state, action) => {
   switch(action.type) {
     case 'createTaskSwitch':
       return { ...state, createTask: action.value }
-    case 'updateTaskSwitch':
-      return { ...state, updateTask: action.value }
+    case 'editTaskSwitch':
+      return { ...state, editTask: action.value, item: action.item }
     case 'deleteTaskSwitch':
       return { ...state, deleteTask: action.value }
     default:

@@ -1,6 +1,8 @@
-import React, { useRef, useState } from 'react'
+import React, { useContext, useRef, useState } from 'react'
+import { ModalsContext } from '../App'
 
 function Task({ item }) {
+  const modalsContext = useContext(ModalsContext)
   const [done, setDone] = useState(item.done)
   const [displayNotes, setDisplayNotes] = useState(false)
   const titleRef = useRef(null)
@@ -50,11 +52,15 @@ function Task({ item }) {
     setDisplayNotes(state => !state)
   }
 
+  const handleEditTaskModalOpen = () => {
+    modalsContext.dispatch({ type: 'editTaskSwitch', value: true, item: {...item, done} })
+  }
+
   return (
     <div className="todo-item-container">
       <div className='operations-container'>
         <input type="checkbox" className="mark-task-as-done-checkbox" checked={done ? 'checked' : ''} onChange={ handleCheckDone } title='Mark task as done' />
-        <button className='buttons-style-2' title='Edit'>
+        <button className='buttons-style-2' title='Edit' onClick={ handleEditTaskModalOpen }>
           <svg className="size16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M181,21c14,2.34,23.12,11.71,31.67,21.91,11.51,13.73,11.54,35.17.09,49.12a72.16,72.16,0,0,1-4.92,5.28c-28.77,28.9-57.72,57.62-86.22,86.79-7.39,7.56-15.52,12.24-25.89,13.84-10.17,1.57-20.22,3.93-30.33,6-16,3.21-29.39-9.93-26.3-26.14,2.44-12.8,4.87-25.62,8.06-38.24a29.24,29.24,0,0,1,7-12.79C85.08,95.19,116.36,64,147.42,32.57c6.12-6.18,13.65-9.28,21.71-11.56ZM60.2,183c13.35-2.22,25.88-4.24,38.37-6.48a9,9,0,0,0,4.14-2.67c6.56-6.47,13-13,19.49-19.58q36-36.36,72.08-72.75c8-8.14,8.18-17.45.52-25.6-1.94-2.07-4-4-6-6q-14.2-14.25-28.37,0Q116.26,94.29,72,138.7a17.35,17.35,0,0,0-5.23,9.8C64.84,159.78,62.52,171,60.2,183Zm151.36,56,1.9-.89c4.87-2.19,7.13-5.86,6.6-10.7s-4.09-8.37-9.21-9.13a37.33,37.33,0,0,0-5.5-.27H53.49a39,39,0,0,0-5.92.31c-7,1.05-11,8.1-7.6,14.35,1.4,2.61,4.61,4.25,7,6.33Z"/></svg>
         </button>
         <button className='buttons-style-2' title='Delete'>

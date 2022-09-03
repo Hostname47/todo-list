@@ -48,12 +48,12 @@
 .todo-item-container .mark-task-as-done-checkbox {
   width: 15px;
   height: 15px;
-  margin: -2px 4px 0 4px;
+  margin: 0 4px;
 }
 
 .todo-item-container .operations-container {
   display: flex;
   align-items: center;
   gap: 2px;
-  padding: 3px 10px;
+  padding: 4px 10px;
 }

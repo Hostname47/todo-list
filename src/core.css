@@ -25,6 +25,9 @@ button {
   padding: 0;
   cursor: pointer;
 }
+input[type=checkbox] {
+  margin: 0;
+}
 
 label {
   display: flex;
@@ -72,8 +75,18 @@ label {
   cursor: default !important;
   background-color: #f7f7f7 !important;
 }
+.button-style-1.green {
+  background-color: #dff9dd;
+  border-color: #a8d0a4;
+  color: #274025;
+  fill: #274025;
+}
+.button-style-1.green:hover {
+  background-color: #d1eccf;
+}
 
 .buttons-style-2 {
+  display: flex;
   border-radius: 50%;
   padding: 4px;
 }
@@ -108,6 +121,7 @@ label {
   justify-content: center;
 }
 
+.size8 { width: 8px; height: 8px; }
 .size12 { width: 12px; height: 12px; }
 .size14 { width: 14px; height: 14px; }
 .size16 { width: 16px; height: 16px; }
