@@ -73,6 +73,14 @@ label {
   background-color: #f7f7f7 !important;
 }
 
+.buttons-style-2 {
+  border-radius: 50%;
+  padding: 4px;
+}
+.buttons-style-2:hover {
+  background-color: #e2e6ec;
+}
+
 .text-center {
   text-align: center;
 }
@@ -102,6 +110,7 @@ label {
 
 .size12 { width: 12px; height: 12px; }
 .size14 { width: 14px; height: 14px; }
+.size16 { width: 16px; height: 16px; }
 
 .my8 { margin-top: 8px; margin-bottom: 8px; }
 .mb8 {
@@ -113,6 +122,10 @@ label {
 
 .move-to-right {
   margin-left: auto;
+}
+
+.dark {
+  color: #151516;
 }
 
 .absolute-full-screen {

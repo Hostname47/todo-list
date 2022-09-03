@@ -17,7 +17,7 @@ function Todolist() {
 
     request.onerror = function (event) {
       messagesContext.dispatch({ type: 'error', value: 'Tasks fetching went wrong for some reason' })
-    };    
+    };
 
     request.onupgradeneeded = function () {
       const db = request.result;
@@ -34,6 +34,10 @@ function Todolist() {
 
       dataRequest.onsuccess = () => {
         todolistContext.dispatch({ type: 'fillTasks', tasks: dataRequest.result })
+      }
+
+      transaction.oncomplete = () => {
+        db.close()
       }
     }
   }, [state.refresh])

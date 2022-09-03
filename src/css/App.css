@@ -5,15 +5,19 @@
   border-radius: 4px;
   margin: 16px auto;
   background-color: #f9f9f9;
-  border: 1px solid #d8dfe8;
+  border: 1px solid #bdc7d5;
   overflow-y: auto;
   max-height: 380px;
 }
 
 .todo-item-container {
   display: flex;
-  align-items: center;
-  gap: 6px;
+  align-items: flex-start;
+  border-bottom: 1px solid #bdc7d5;
+}
+
+.todo-item-container .content-box {
+  border-left: 1px solid #bdc7d5;
   padding: 8px;
 }
 
@@ -24,10 +28,32 @@
   width: 300px;
   height: 1.2em; 
   white-space: nowrap;
+  transition: all 0.4s ease;
+}
+
+.todo-item-container .content.done {
+  text-decoration: line-through;
+  color: #4d535e;
+}
+
+.todo-item-container .notes {
+  margin: 8px 0;
+  font-size: 13px;
+}
+.todo-item-container .notes.not-set {
+  font-size: 12px;
+  color: rgb(70, 70, 70);
 }
 
 .todo-item-container .mark-task-as-done-checkbox {
   width: 15px;
   height: 15px;
+  margin: -2px 4px 0 4px;
 }
 
+.todo-item-container .operations-container {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px 10px;
+}
