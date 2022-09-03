@@ -5,60 +5,52 @@ import Todolist from "./components/Todolist";
 import './css/App.css'
 import CreateTaskModal from "./modals/CreateTaskModal";
 
-/**
- * The reason we used reducer here instead of useState is that we need to handle
- * multiple modals and we want to pass a single dispatch method that will trigger
- * modal switch action depend on the modal we want to open or close
- * 
- * Also we share the dispatch method through context to header and to every modal
- * component in order to be able to open and close the targeted modal
- */
-const modalsInitialState = {
-  createTask: false
-}
-const modalsReducer = (state, action) => {
-  switch(action.type) {
-    case 'createTaskSwitch':
-      return { ...state, createTask: action.value }
-    // Other modals cases later
-    default:
-      return state
-  }
-}
-export const ModalsContext = React.createContext()
+// Import reducers
+import { modalsInitialState, modalsReducer} from './reducers/modalsReducer'
+import { messagesInitialState, messagesReducer} from './reducers/messagesReducer'
 
-const messagesInitialState = {
+export const ModalsContext = React.createContext()
+export const TodolistContext = React.createContext()
+export const MessagesContext = React.createContext()
+
+const todolistInitialState = {
+  tasks: [],
+  loading: true,
   error: '',
-  success: '',
-  regular: ''
+  refresh: false
 }
-const messagesReducer = (state, action) => {
+
+const todolistReducer = (state, action) => {
   switch(action.type) {
-    case 'success':
-      return { ...state, success: action.value }
-    case 'error':
-      return { ...state, error: action.value }
-    case 'regular':
-      return { ...state, regular: action.value }
+    case 'refresh':
+      // Just a workaround til I find a better way to refresh components
+      console.log('hatch')
+      return { ...state, refresh: !state.refresh }
+    case 'setLoading':
+      return { ...state, loading: action.loading }
+    case 'fillTasks':
+      return { ...state, tasks: action.tasks }
     default:
       return state
   }
 }
-export const MessagesContext = React.createContext()
 
 function App() {
   const [modals, modalsDispatcher] = useReducer(modalsReducer, modalsInitialState)
   const [messages, messagesDispatch] = useReducer(messagesReducer, messagesInitialState)
-
+  const [todolist, todoDispatch] = useReducer(todolistReducer, todolistInitialState)
+  console.log('render App')
   return (
     <ModalsContext.Provider value={ { state: modals, dispatch: modalsDispatcher } }>
       <MessagesContext.Provider value={ { state: messages, dispatch: messagesDispatch } }>
-        <div className="App">
-            <Header  />
-            <Messages messages={ messages } dispatch={ messagesDispatch } />
-            <Todolist />
-            { modals.createTask && <CreateTaskModal /> }
-        </div>
+        <TodolistContext.Provider value={ { state: todolist, dispatch: todoDispatch } }>
+          <div className="App">
+              <Header  />
+              <Messages messages={ messages } dispatch={ messagesDispatch } />
+              <Todolist />
+              { modals.createTask && <CreateTaskModal todolistDispatch={ todoDispatch } /> }
+          </div>
+        </TodolistContext.Provider>
       </MessagesContext.Provider>
     </ModalsContext.Provider>
   );

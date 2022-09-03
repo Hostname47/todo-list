@@ -1,13 +1,15 @@
 import React, { useContext, useRef, useState } from 'react'
 import * as ReactDOM from 'react-dom';
-import { ModalsContext } from '../App';
+import { ModalsContext, TodolistContext } from '../App';
 import { MessagesContext } from '../App';
 import useInput from '../hooks/useInput';
 
-function CreateTaskModal() {
+function CreateTaskModal({ todolistDispatch }) {
   // Consum Modals Context provided from the root App component to control all the modals switches
   const modalsContext = useContext(ModalsContext)
   const messagesContext = useContext(MessagesContext)
+  const todolistContext = useContext(TodolistContext)
+
   const createButtonRef = useRef(null)
   // State (useInput is a custom hook)
   const [error, setError] = useState('')
@@ -67,7 +69,7 @@ function CreateTaskModal() {
        * 3. close the create task modal
        */
       messagesContext.dispatch({ type: 'success', value: 'Task has been created successfully' })
-
+      todolistDispatch({ type: 'refresh' })
       modalsContext.dispatch({ type: 'createTaskSwitch', value: false })
     }
   }

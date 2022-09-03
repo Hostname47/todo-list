@@ -1,19 +1,17 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect } from 'react'
 import Task from './Task'
-import { MessagesContext } from '../App'
+import { MessagesContext, TodolistContext } from '../App'
 
 function Todolist() {
   const messagesContext = useContext(MessagesContext)
-
-  const [list, setList] = useState([])
-  const [loading, setLoading] = useState(true)
-
+  const todolistContext = useContext(TodolistContext)
+  const state = todolistContext.state
   /**
    * Fetch todo list from IndexedDB; but for now let's just pretend :)
    */
   useEffect(() => {
     // Set loading to false when data fetched or when an error occured while fetching
-    setLoading(false)
+    todolistContext.dispatch({ type: 'setLoading', loading: false })
 
     const request = indexedDB.open('todos', 1)
 
@@ -35,15 +33,16 @@ function Todolist() {
       const dataRequest = store.getAll()
 
       dataRequest.onsuccess = () => {
-        setList(dataRequest.result)
+        todolistContext.dispatch({ type: 'fillTasks', tasks: dataRequest.result })
       }
     }
-  }, [])
+  }, [state.refresh])
 
+  
   return (
     <div>
       {
-        loading 
+        state.loading
           ?
             <div className='full-center align-center g6 my8'>
               <svg className="spinner size14 rotate" fill="none" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" stroke="currentColor" strokeOpacity="0.25" strokeWidth="2" vectorEffect="non-scaling-stroke"></circle><path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" vectorEffect="non-scaling-stroke"></path></svg>
@@ -51,8 +50,8 @@ function Todolist() {
             </div>
           : 
             <div id='todo-items-box'>
-              { list.length
-                ? list.map(item => (
+              { state.tasks.length
+                ? state.tasks.map(item => (
                     <Task key={ item.id } item={ item } />
                   )
                 )
