@@ -1,10 +1,8 @@
 import React, { useContext, useRef, useState } from 'react'
 import { ModalsContext } from '../App'
-import { MessagesContext } from '../App'
 
 function Task({ item, todolistDispatch }) {
   const modalsContext = useContext(ModalsContext)
-  const messagesContext = useContext(MessagesContext)
   const [done, setDone] = useState(item.done)
   const [displayNotes, setDisplayNotes] = useState(false)
 

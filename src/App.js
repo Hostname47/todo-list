@@ -9,6 +9,7 @@ import CreateTaskModal from "./modals/CreateTaskModal";
 import { modalsInitialState, modalsReducer} from './reducers/modalsReducer'
 import { messagesInitialState, messagesReducer} from './reducers/messagesReducer'
 import EditTaskModal from "./modals/EditTaskModal";
+import AboutModal from "./modals/AboutModal";
 
 export const ModalsContext = React.createContext()
 export const TodolistContext = React.createContext()
@@ -53,6 +54,7 @@ function App() {
               <Todolist />
               { modals.createTask && <CreateTaskModal todolistDispatch={ todoDispatch } /> }
               { modals.editTask && <EditTaskModal todolistDispatch={ todoDispatch } /> }
+              { modals.about && <AboutModal /> }
           </div>
         </TodolistContext.Provider>
       </MessagesContext.Provider>

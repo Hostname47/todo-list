@@ -10,7 +10,7 @@
 const modalsInitialState = {
   createTask: false,
   editTask: false,
-  deleteTask: false,
+  about: false,
   item: {}
 }
 const modalsReducer = (state, action) => {
@@ -19,6 +19,8 @@ const modalsReducer = (state, action) => {
       return { ...state, createTask: action.value }
     case 'editTaskSwitch':
       return { ...state, editTask: action.value, item: action.item }
+    case 'aboutSwitch':
+      return { ...state, about: action.value }
     // Delete task is done in the task component itself and we don't need to do it in a separate modal
     default:
       return state
