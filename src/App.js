@@ -3,63 +3,39 @@ import Header from "./components/Header";
 import Messages from "./components/Messages";
 import Todolist from "./components/Todolist";
 import './css/App.css'
-import CreateTaskModal from "./modals/CreateTaskModal";
+import AboutModal from './modals/AboutModal'
+import CreateTaskModal from './modals/CreateTaskModal'
+import EditTaskModal from './modals/EditTaskModal'
 
 // Import reducers
-import { modalsInitialState, modalsReducer} from './reducers/modalsReducer'
-import { messagesInitialState, messagesReducer} from './reducers/messagesReducer'
-import EditTaskModal from "./modals/EditTaskModal";
-import AboutModal from "./modals/AboutModal";
+import {modalsInitialState, modalsReducer} from './reducers/modalsReducer'
+import {todolistInitialState, todolistReducer} from './reducers/todolistReducer'
+import {messagesInitialState, messagesReducer} from './reducers/messagesReducer'
 
-export const ModalsContext = React.createContext()
 export const TodolistContext = React.createContext()
+export const ModalsContext = React.createContext()
 export const MessagesContext = React.createContext()
 
-const todolistInitialState = {
-  tasks: [],
-  loading: true,
-  error: '',
-  refresh: false
-}
-
-const todolistReducer = (state, action) => {
-  switch(action.type) {
-    case 'refresh':
-      // Just a workaround til I find a better way to refresh components
-      console.log('hatch')
-      return { ...state, refresh: !state.refresh }
-    case 'setLoading':
-      return { ...state, loading: action.loading }
-    case 'fillTasks':
-      return { ...state, tasks: action.tasks }
-    default:
-      return state
-  }
-}
-
-
-
 function App() {
-  const [modals, modalsDispatcher] = useReducer(modalsReducer, modalsInitialState)
-  const [messages, messagesDispatch] = useReducer(messagesReducer, messagesInitialState)
-  const [todolist, todoDispatch] = useReducer(todolistReducer, todolistInitialState)
-  
+  const [ modalsState, modalsDispatch ] = useReducer(modalsReducer, modalsInitialState)
+  const [ todolistState, todolistDispatch ] = useReducer(todolistReducer, todolistInitialState)
+  const [ messagesState, messagesDispatch ] = useReducer(messagesReducer, messagesInitialState)
+
+  console.log('--- Render App ---')
   return (
-    <ModalsContext.Provider value={ { state: modals, dispatch: modalsDispatcher } }>
-      <MessagesContext.Provider value={ { state: messages, dispatch: messagesDispatch } }>
-        <TodolistContext.Provider value={ { state: todolist, dispatch: todoDispatch } }>
-          <div className="App">
-              <Header />
-              <Messages messages={ messages } dispatch={ messagesDispatch } />
-              <Todolist />
-              { modals.createTask && <CreateTaskModal todolistDispatch={ todoDispatch } /> }
-              { modals.editTask && <EditTaskModal todolistDispatch={ todoDispatch } /> }
-              { modals.about && <AboutModal /> }
-          </div>
-        </TodolistContext.Provider>
-      </MessagesContext.Provider>
-    </ModalsContext.Provider>
-  );
+    <TodolistContext.Provider value={{ state: todolistState, dispatch: todolistDispatch }}>
+      <ModalsContext.Provider value={{ state: modalsState, dispatch: modalsDispatch }}>
+        <MessagesContext.Provider value={{ state: messagesState, dispatch: messagesDispatch }}>
+          <Header />
+          <Messages />
+          <Todolist />
+          { modalsState.about && <AboutModal /> }
+          { modalsState.createTask && <CreateTaskModal /> }
+          { modalsState.editTask && <EditTaskModal task={ modalsState.task } /> }
+        </MessagesContext.Provider>
+      </ModalsContext.Provider>
+    </TodolistContext.Provider>
+  )
 }
 
 export default App;

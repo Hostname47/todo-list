@@ -1,13 +1,30 @@
-import React, { useContext, useRef, useState } from 'react'
-import { ModalsContext } from '../App'
+import React, { useContext, useEffect, useRef, useState } from 'react'
+import { ModalsContext, TodolistContext } from '../App'
 
-function Task({ item, todolistDispatch }) {
-  const modalsContext = useContext(ModalsContext)
-  const [done, setDone] = useState(item.done)
+function Task({ task }) {
+  const [done, setDone] = useState(task.done)
   const [displayNotes, setDisplayNotes] = useState(false)
 
   const titleRef = useRef(null)
   const deleteContainerRef = useRef(null)
+
+  /**
+   * The following effect is really important, becuase when the user update the done in
+   * edit task modal, it will fire refresh action of the todolist reducer which causes
+   * the todolist to re-render, and becuase the task edited is a child of todolist component,
+   * it will also re-rendered, BUT the problem is that the done state in Task component will
+   * still hold the previous value and we use that done state to control the done input in the task
+   * 
+   * So what we can do here, is to fire the following effect which set done state of checkbox
+   * to match the value of done passed as prop (task in parameter) because done checkbox does 
+   * not know anything about the update.
+   */
+  useEffect(() => {
+    setDone(task.done)
+  }, [task.done])
+
+  const todolistContext = useContext(TodolistContext)
+  const modalsContext = useContext(ModalsContext)
 
   const handleCheckDone = e => {
     // Here we need to update the task in database and we set done when process finished with success
@@ -31,7 +48,7 @@ function Task({ item, todolistDispatch }) {
       const transaction = db.transaction("tasks", 'readwrite');
 
       const store = transaction.objectStore("tasks");
-      const dataRequest = store.get(item.id)
+      const dataRequest = store.get(task.id)
 
       dataRequest.onsuccess = () => {
         const task = dataRequest.result
@@ -73,10 +90,10 @@ function Task({ item, todolistDispatch }) {
       const transaction = db.transaction("tasks", 'readwrite');
 
       const store = transaction.objectStore("tasks");
-      const dataRequest = store.delete(item.id)
+      const dataRequest = store.delete(task.id)
 
       dataRequest.onsuccess = () => {
-        todolistDispatch({ type: 'refresh' })
+        todolistContext.dispatch({ type: 'refresh' })
       }
 
       transaction.oncomplete = () => {
@@ -86,7 +103,7 @@ function Task({ item, todolistDispatch }) {
   }
 
   const handleEditTaskModalOpen = () => {
-    modalsContext.dispatch({ type: 'editTaskSwitch', value: true, item: {...item, done} })
+    modalsContext.dispatch({ type: 'editTaskSwitch', value: true, task })
   }
 
   return (
@@ -97,7 +114,7 @@ function Task({ item, todolistDispatch }) {
         <button className='flat-button-style' onClick={ e => handleDeleteContainer(e, false) }>No</button>
       </div>
       <div className='operations-container'>
-        <input type="checkbox" className="mark-task-as-done-checkbox" checked={done ? 'checked' : ''} onChange={ handleCheckDone } title='Mark task as done' />
+        <input type="checkbox" className="mark-task-as-done-checkbox" checked={ done && 'checked' } onChange={ handleCheckDone } title='Mark task as done' />
         <button className='buttons-style-2' title='Edit' onClick={ handleEditTaskModalOpen }>
           <svg className="size16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M181,21c14,2.34,23.12,11.71,31.67,21.91,11.51,13.73,11.54,35.17.09,49.12a72.16,72.16,0,0,1-4.92,5.28c-28.77,28.9-57.72,57.62-86.22,86.79-7.39,7.56-15.52,12.24-25.89,13.84-10.17,1.57-20.22,3.93-30.33,6-16,3.21-29.39-9.93-26.3-26.14,2.44-12.8,4.87-25.62,8.06-38.24a29.24,29.24,0,0,1,7-12.79C85.08,95.19,116.36,64,147.42,32.57c6.12-6.18,13.65-9.28,21.71-11.56ZM60.2,183c13.35-2.22,25.88-4.24,38.37-6.48a9,9,0,0,0,4.14-2.67c6.56-6.47,13-13,19.49-19.58q36-36.36,72.08-72.75c8-8.14,8.18-17.45.52-25.6-1.94-2.07-4-4-6-6q-14.2-14.25-28.37,0Q116.26,94.29,72,138.7a17.35,17.35,0,0,0-5.23,9.8C64.84,159.78,62.52,171,60.2,183Zm151.36,56,1.9-.89c4.87-2.19,7.13-5.86,6.6-10.7s-4.09-8.37-9.21-9.13a37.33,37.33,0,0,0-5.5-.27H53.49a39,39,0,0,0-5.92.31c-7,1.05-11,8.1-7.6,14.35,1.4,2.61,4.61,4.25,7,6.33Z"/></svg>
         </button>
@@ -109,11 +126,11 @@ function Task({ item, todolistDispatch }) {
         </button>
       </div>
       <div className='content-box'>
-        <p className={ `content ${ item.done && 'done' }` } ref={ titleRef }>{ item.title }</p>
+        <p className={ `content ${ done && 'done' }` } ref={ titleRef }>{ task.title }</p>
         { displayNotes && (
           <div>
-            { item.notes 
-              ? <p className='notes'><strong className='dark'>Notes :</strong> { item.notes }</p>
+            { task.notes 
+              ? <p className='notes'><strong className='dark'>Notes :</strong> { task.notes }</p>
               : <em className='notes not-set'><strong className='dark'>Notes :</strong> No notes available for this task.</em>
             }
           </div>

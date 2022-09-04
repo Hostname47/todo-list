@@ -1,17 +1,22 @@
-import React, { useContext, useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useContext } from 'react'
 import { ModalsContext } from '../App'
 
 function Header() {
-  const heartRef = useRef()
-  const modalsContext = useContext(ModalsContext)
+  const { dispatch: modalsDispatch } = useContext(ModalsContext)
   const handleCreateTaskModalOpen = () => {
-    modalsContext.dispatch({ type: 'createTaskSwitch', value: true })
+    /**
+     * Dispatch modals context will cause the App component to rerender and all its
+     * subcomponents which is not efficient at all (same thing with about modal switch)
+     */
+    modalsDispatch({ type: 'createTaskSwitch', value: true })
   }
 
   const handleAboutModalOpen = () => {
-    modalsContext.dispatch({ type: 'aboutSwitch', value: true })
+    modalsDispatch({ type: 'aboutSwitch', value: true })
   }
 
+  const heartRef = useRef()
+  // Heart beating effect
   useEffect(() => {
     const heartBeating = setInterval(() => {
       if(heartRef.current.style.width === '16px') {
@@ -27,10 +32,10 @@ function Header() {
       clearInterval(heartBeating)
     }
   }, [])
-
   const heartWrapper = { maxHeight: '19px', height: '19px', maxWidth: '19px', width: '19px', margin: '0 2px' }
   const heart = { width: '16px', stroke: '#331010', strokeWidth: '5px' }
   
+  console.log('--- Render Header ---')
   return (
     <header>
       <div className='align-center'>
@@ -60,4 +65,4 @@ function Header() {
   )
 }
 
-export default Header
+export default React.memo(Header)

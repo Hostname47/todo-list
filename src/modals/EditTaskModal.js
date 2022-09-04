@@ -1,18 +1,21 @@
-import React, { useContext, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import * as ReactDOM from 'react-dom';
-import { ModalsContext, MessagesContext } from '../App';
+import { MessagesContext, ModalsContext, TodolistContext } from '../App';
 import useInput from '../hooks/useInput';
 
-function EditTaskModal({ todolistDispatch }) {
+function EditTaskModal() {
   const modalsContext = useContext(ModalsContext)
   const messagesContext = useContext(MessagesContext)
-  const item = modalsContext.state.item
+  const todolistContext = useContext(TodolistContext)
+
+  const task = modalsContext.state.task
   const updateButtonRef = useRef(null)
 
   const [error, setError] = useState('')
-  const [done, setDone] = useState(item.done)
-  const [title, titleBind, resetTitle] = useInput(item.title)
-  const [notes, notesBind, resetNotes] = useInput(item.notes)
+  const [done, setDone] = useState(task.done)
+
+  const [title, titleBind, resetTitle] = useInput(task.title)
+  const [notes, notesBind, resetNotes] = useInput(task.notes)
 
   const handleEditTaskModalClose = () => {
     modalsContext.dispatch({ type: 'editTaskSwitch', value: false })
@@ -63,7 +66,7 @@ function EditTaskModal({ todolistDispatch }) {
       const transaction = db.transaction("tasks", "readwrite");
 
       const store = transaction.objectStore("tasks");
-      const taskRequest = store.get(item.id)
+      const taskRequest = store.get(task.id)
 
       taskRequest.onsuccess = () => {
         const task = taskRequest.result
@@ -73,14 +76,18 @@ function EditTaskModal({ todolistDispatch }) {
         store.put(task)
 
         /**
-         * After storing the task to indexedDB we need to:
-         * 1. display a message to user about new task created
+         * After updating the task we need to:
+         * 1. display a message to user task updates
          * 2. refresh list in Todolist component
          * 3. close the create task modal
          */
-        messagesContext.dispatch({ type: 'success', value: 'Task has been updated successfully' })
-        todolistDispatch({ type: 'refresh' })
+        messagesContext.dispatch({ type: 'regular', value: 'Task has been updated successfully' })
         modalsContext.dispatch({ type: 'editTaskSwitch', value: false })
+        todolistContext.dispatch({ type: 'refresh' })
+
+        transaction.oncomplete = () => {
+          db.close()
+        }
       }
     }
   }
@@ -89,7 +96,7 @@ function EditTaskModal({ todolistDispatch }) {
     e.preventDefault()
     
     setError('')
-    setDone(item.done)
+    setDone(task.done)
     resetTitle()
     resetNotes()
   }

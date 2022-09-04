@@ -11,14 +11,14 @@ const modalsInitialState = {
   createTask: false,
   editTask: false,
   about: false,
-  item: {}
+  task: {}
 }
 const modalsReducer = (state, action) => {
   switch(action.type) {
     case 'createTaskSwitch':
       return { ...state, createTask: action.value }
     case 'editTaskSwitch':
-      return { ...state, editTask: action.value, item: action.item }
+      return { ...state, editTask: action.value, task: action.task }
     case 'aboutSwitch':
       return { ...state, about: action.value }
     // Delete task is done in the task component itself and we don't need to do it in a separate modal

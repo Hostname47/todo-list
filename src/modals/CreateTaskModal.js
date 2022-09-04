@@ -1,13 +1,13 @@
-import React, { useContext, useRef, useState } from 'react'
+import React, { useRef, useState, useContext } from 'react'
 import * as ReactDOM from 'react-dom';
-import { ModalsContext } from '../App';
-import { MessagesContext } from '../App';
+import { MessagesContext, ModalsContext, TodolistContext } from '../App';
 import useInput from '../hooks/useInput';
 
-function CreateTaskModal({ todolistDispatch }) {
+function CreateTaskModal() {
   // Consum Modals Context provided from the root App component to control all the modals switches
-  const modalsContext = useContext(ModalsContext)
-  const messagesContext = useContext(MessagesContext)
+  const { dispatch: messagesDispatch } = useContext(MessagesContext)
+  const { dispatch: modalsDispatch } = useContext(ModalsContext)
+  const { dispatch: todolistDispatch } = useContext(TodolistContext)
 
   const createButtonRef = useRef(null)
   // State (useInput is a custom hook)
@@ -16,7 +16,7 @@ function CreateTaskModal({ todolistDispatch }) {
   const [notes, notesBind,] = useInput('')
   
   const handleCreateTaskModalClose = () => {
-    modalsContext.dispatch({ type: 'createTaskSwitch', value: false })
+    modalsDispatch({ type: 'createTaskSwitch', value: false })
   }
   const handleCreateTask = e => {
     e.preventDefault()
@@ -59,7 +59,7 @@ function CreateTaskModal({ todolistDispatch }) {
       const transaction = db.transaction("tasks", "readwrite");
 
       const store = transaction.objectStore("tasks");
-      store.put({ title, notes });
+      store.put({ title, notes, done: false });
 
       /**
        * After storing the task to indexedDB we need to:
@@ -67,9 +67,13 @@ function CreateTaskModal({ todolistDispatch }) {
        * 2. refresh list in Todolist component
        * 3. close the create task modal
        */
-      messagesContext.dispatch({ type: 'success', value: 'Task has been created successfully' })
+      messagesDispatch({ type: 'success', value: 'Task has been created successfully' })
+      handleCreateTaskModalClose()
       todolistDispatch({ type: 'refresh' })
-      modalsContext.dispatch({ type: 'createTaskSwitch', value: false })
+
+      transaction.oncomplete = () => {
+        db.close()
+      }
     }
   }
 

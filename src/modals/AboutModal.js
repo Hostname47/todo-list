@@ -1,11 +1,11 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import * as ReactDOM from 'react-dom';
 import { ModalsContext } from '../App';
 
 function AboutModal() {
-  const modalsContext = useContext(ModalsContext)
-  const handleAboutModalClose = () => {
-    modalsContext.dispatch({ type: 'aboutSwitch', value: false })
+  const { dispatch: modalsDispatch } = useContext(ModalsContext)
+  const handleAboutModalClose = (status) => {
+    modalsDispatch({ type: 'aboutSwitch', value: false })
   }
 
   return ReactDOM.createPortal((

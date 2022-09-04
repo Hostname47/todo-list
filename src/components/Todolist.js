@@ -1,30 +1,24 @@
 import React, { useContext, useEffect } from 'react'
 import Task from './Task'
-import { MessagesContext, TodolistContext } from '../App'
+import { TodolistContext } from '../App'
 
 function Todolist() {
-  const messagesContext = useContext(MessagesContext)
-  const todolistContext = useContext(TodolistContext)
-  const state = todolistContext.state
+  const { state, dispatch } = useContext(TodolistContext)
+
+  console.log('--- Render Todolist ---')
   /**
    * Fetch todo list from IndexedDB; but for now let's just pretend :)
    */
   useEffect(() => {
-    // Set loading to false when data fetched or when an error occured while fetching
-    todolistContext.dispatch({ type: 'setLoading', loading: false })
-
     const request = indexedDB.open('todos', 1)
-
     request.onerror = function (event) {
-      messagesContext.dispatch({ type: 'error', value: 'Tasks fetching went wrong for some reason' })
+      // messagesContext.dispatch({ type: 'error', value: 'Tasks fetching went wrong for some reason' })
     };
-
     request.onupgradeneeded = function () {
       const db = request.result;
       const store = db.createObjectStore("tasks", { keyPath: "id", autoIncrement: true });
       store.createIndex("done_tasks", ["done"], { unique: false });
     };
-
     request.onsuccess = function() {
       const db = request.result;
       const transaction = db.transaction("tasks", 'readonly');
@@ -33,7 +27,9 @@ function Todolist() {
       const dataRequest = store.getAll()
 
       dataRequest.onsuccess = () => {
-        todolistContext.dispatch({ type: 'fillTasks', tasks: dataRequest.result })
+        // Fill returned data to todolist (and set loading to false)
+        console.log(dataRequest.result)
+        dispatch({ type: 'fillTasks', tasks: dataRequest.result })
       }
 
       transaction.oncomplete = () => {
@@ -42,7 +38,6 @@ function Todolist() {
     }
   }, [state.refresh])
 
-  
   return (
     <div>
       {
@@ -55,8 +50,8 @@ function Todolist() {
           : 
             <div id='todo-items-box'>
               { state.tasks.length
-                ? state.tasks.map(item => (
-                    <Task key={ item.id } item={ item } todolistDispatch={ todolistContext.dispatch } />
+                ? state.tasks.map(task => (
+                    <Task key={ task.id } task={ task } todolistDispatch={ dispatch } />
                   )
                 )
                 : (
@@ -68,7 +63,6 @@ function Todolist() {
               }
             </div>
       }
-
     </div>
   )
 }
