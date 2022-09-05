@@ -29,9 +29,9 @@ function App() {
           <Header />
           <Messages />
           <Todolist />
-          { modalsState.about && <AboutModal /> }
-          { modalsState.createTask && <CreateTaskModal /> }
-          { modalsState.editTask && <EditTaskModal task={ modalsState.task } /> }
+          { <AboutModal status={ modalsState.about } /> }
+          { <CreateTaskModal status={ modalsState.createTask }/> }
+          { <EditTaskModal status={ modalsState.editTask } task={ modalsState.task } /> }
         </MessagesContext.Provider>
       </ModalsContext.Provider>
     </TodolistContext.Provider>

@@ -4,8 +4,6 @@ import { TodolistContext } from '../App'
 
 function Todolist() {
   const { state, dispatch } = useContext(TodolistContext)
-
-  console.log('--- Render Todolist ---')
   /**
    * Fetch todo list from IndexedDB; but for now let's just pretend :)
    */
@@ -28,7 +26,6 @@ function Todolist() {
 
       dataRequest.onsuccess = () => {
         // Fill returned data to todolist (and set loading to false)
-        console.log(dataRequest.result)
         dispatch({ type: 'fillTasks', tasks: dataRequest.result })
       }
 
@@ -38,6 +35,7 @@ function Todolist() {
     }
   }, [state.refresh])
 
+  console.log('--- Render Todolist ---')
   return (
     <div>
       {

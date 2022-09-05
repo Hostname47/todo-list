@@ -2,13 +2,15 @@ import React, { useContext, useState } from 'react'
 import * as ReactDOM from 'react-dom';
 import { ModalsContext } from '../App';
 
-function AboutModal() {
+function AboutModal({ status }) {
   const { dispatch: modalsDispatch } = useContext(ModalsContext)
   const handleAboutModalClose = (status) => {
     modalsDispatch({ type: 'aboutSwitch', value: false })
   }
+  
+  console.log('--- Render About Modal ---')
 
-  return ReactDOM.createPortal((
+  return status && ReactDOM.createPortal((
     <div className='absolute-full-screen full-center modal-box'>
       <div className='absolute-full-screen modal-overlay'></div>
       <div className='relative modal-style-1-container'>
@@ -25,8 +27,9 @@ function AboutModal() {
         <div className='content-box fs13 line-height-18'>
           <p style={{ marginTop: 0 }}>I started learning <strong>ReactJS</strong> in the 1st august, and after a month exactly (1st septembre), I'm feeling much more comfortable with the basics concepts as well as the advanced ones like Hooks, HOCs, render optimization and so on. I learned the basics as well as the advanced topics following by all the common hooks, but as the saying goes, you cannot say you understand something until you build something including all the techniques offered by the technology and also it should be fine tuned.</p>
           <p>So I decided to create this simple todo list application since it includes all the areas where you can apply react concepts be more familare with React.</p>
-          <p>You may find a lot of mess or features misuses if you take a look at the <a href="https://github.com/Hostname47/todo-list" target='_blank' rel="noreferrer" className='link'>source code</a> of this application but yeah, as I said I'm still practicing and learning front-end realm (I have a back-end background), but If you find something wrong or some addition that can benefits the app, feel free to clone or open a pull request and I'll be very happy to merge you ass :)</p>
+          <p>You may find a lot of mess or features misuses if you take a look at the <a href="https://github.com/Hostname47/todo-list" target='_blank' rel="noreferrer" className='link'>source code</a> of this application but yeah, as I said I'm still practicing and I'm new to front-end realm. Feel free to clone or open a pull request if you find something wrong and I'll be very happy to merge you ass :)</p>
           <p><strong>Note</strong>: This application uses IndexedDB API to process and managed the data, and as you may already know, you should never rely on it, since the user could remove the local data, so this should only be used for performence purposes and simple use cases due to its limitations.</p>
+          <p>Currently I noticed that managing global state (e.g. closing modals from task component) is really difficult to manage, and It causes children re-renders everytime the App state changes since it contains all the global state, so I decided to start using Redux to manage global state and maybe I'll refactore this project to use redux as soon as I get comfortable with redux.</p>
           <p className='full-center bold'><em>~ Mouad Nassri</em></p>
         </div>
       </div>

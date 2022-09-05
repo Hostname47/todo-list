@@ -6,9 +6,9 @@ import { MessagesContext } from '../App'
  */
 
 function Messages() {
-  console.log('--- Render Messages Component ---')
   const { state, dispatch } = useContext(MessagesContext)
-
+  
+  console.log('--- Render Messages Component ---')
   return (
     <div>
       { state.regular && (

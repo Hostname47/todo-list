@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom';
 import { MessagesContext, ModalsContext, TodolistContext } from '../App';
 import useInput from '../hooks/useInput';
 
-function CreateTaskModal() {
+function CreateTaskModal({ status }) {
   // Consum Modals Context provided from the root App component to control all the modals switches
   const { dispatch: messagesDispatch } = useContext(MessagesContext)
   const { dispatch: modalsDispatch } = useContext(ModalsContext)
@@ -77,7 +77,8 @@ function CreateTaskModal() {
     }
   }
 
-  return ReactDOM.createPortal((
+  console.log('--- Render Create Task Modal ---')
+  return status && ReactDOM.createPortal((
     <div className='absolute-full-screen full-center modal-box'>
       <div className='absolute-full-screen modal-overlay'></div>
       <div className='relative modal-style-1-container'>

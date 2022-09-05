@@ -1,9 +1,9 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import * as ReactDOM from 'react-dom';
 import { MessagesContext, ModalsContext, TodolistContext } from '../App';
 import useInput from '../hooks/useInput';
 
-function EditTaskModal() {
+function EditTaskModal({ status }) {
   const modalsContext = useContext(ModalsContext)
   const messagesContext = useContext(MessagesContext)
   const todolistContext = useContext(TodolistContext)
@@ -101,7 +101,9 @@ function EditTaskModal() {
     resetNotes()
   }
 
-  return ReactDOM.createPortal((
+  console.log('--- Render Update Task Modal ---')
+
+  return status && ReactDOM.createPortal((
     <div className='absolute-full-screen full-center modal-box'>
       <div className='absolute-full-screen modal-overlay'></div>
       <div className='relative modal-style-1-container'>

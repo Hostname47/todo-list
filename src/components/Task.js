@@ -106,6 +106,7 @@ function Task({ task }) {
     modalsContext.dispatch({ type: 'editTaskSwitch', value: true, task })
   }
 
+  console.log('--- Render Task ---')
   return (
     <div className="todo-item-container">
       <div className='delete-container' ref={ deleteContainerRef }>
@@ -140,4 +141,4 @@ function Task({ task }) {
   )
 }
 
-export default Task
+export default React.memo(Task)
