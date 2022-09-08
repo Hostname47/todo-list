@@ -1,14 +1,10 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import * as ReactDOM from 'react-dom';
-import { ModalsContext } from '../App';
+import { connect } from 'react-redux';
+import { switchAboutModal } from '../redux/modal/modalActions';
 
-function AboutModal({ status }) {
-  const { dispatch: modalsDispatch } = useContext(ModalsContext)
-  const handleAboutModalClose = (status) => {
-    modalsDispatch({ type: 'aboutSwitch', value: false })
-  }
-  
-  console.log('--- Render About Modal ---')
+function AboutModal({ status, switchModal }) {
+  console.log('--- Render About Modal ---', status)
 
   return status && ReactDOM.createPortal((
     <div className='absolute-full-screen full-center modal-box'>
@@ -20,7 +16,7 @@ function AboutModal({ status }) {
             <h2 className='title'>About</h2>
           </div>
 
-          <button className='flex' onClick={ handleAboutModalClose }>
+          <button className='flex' onClick={ () => switchModal(false) }>
             <svg className="x" viewBox="0 0 24 24"><path d="M20.46.73,12,9.18,3.54.73.72,3.54,9.18,12,.72,20.46l2.82,2.81L12,14.82l8.46,8.45,2.82-2.81L14.82,12l8.46-8.46Z"/></svg>
           </button>
         </div>
@@ -37,4 +33,16 @@ function AboutModal({ status }) {
   ), document.getElementById('modal'));
 }
 
-export default AboutModal
+const mapStateToProps = state => {
+  return {
+    status: state.modal.aboutModalStatus
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    switchModal: switchTo => dispatch(switchAboutModal(switchTo))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AboutModal)

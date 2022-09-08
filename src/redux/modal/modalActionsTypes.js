@@ -1,0 +1,1 @@
+export const SWITCH_ABOUT_MODAL = 'SWITCH_ABOUT_MODAL'

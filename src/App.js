@@ -11,6 +11,8 @@ import EditTaskModal from './modals/EditTaskModal'
 import {modalsInitialState, modalsReducer} from './reducers/modalsReducer'
 import {todolistInitialState, todolistReducer} from './reducers/todolistReducer'
 import {messagesInitialState, messagesReducer} from './reducers/messagesReducer'
+import { Provider } from "react-redux";
+import store from "./redux/store";
 
 export const TodolistContext = React.createContext()
 export const ModalsContext = React.createContext()
@@ -23,18 +25,20 @@ function App() {
 
   console.log('--- Render App ---')
   return (
-    <TodolistContext.Provider value={{ state: todolistState, dispatch: todolistDispatch }}>
-      <ModalsContext.Provider value={{ state: modalsState, dispatch: modalsDispatch }}>
-        <MessagesContext.Provider value={{ state: messagesState, dispatch: messagesDispatch }}>
-          <Header />
-          <Messages />
-          <Todolist />
-          { <AboutModal status={ modalsState.about } /> }
-          { <CreateTaskModal status={ modalsState.createTask }/> }
-          { <EditTaskModal status={ modalsState.editTask } task={ modalsState.task } /> }
-        </MessagesContext.Provider>
-      </ModalsContext.Provider>
-    </TodolistContext.Provider>
+    <Provider store={ store }>
+      <TodolistContext.Provider value={{ state: todolistState, dispatch: todolistDispatch }}>
+        <ModalsContext.Provider value={{ state: modalsState, dispatch: modalsDispatch }}>
+          <MessagesContext.Provider value={{ state: messagesState, dispatch: messagesDispatch }}>
+            <Header />
+            <Messages />
+            <Todolist />
+            { <AboutModal /> }
+            { <CreateTaskModal status={ modalsState.createTask }/> }
+            { <EditTaskModal status={ modalsState.editTask } task={ modalsState.task } /> }
+          </MessagesContext.Provider>
+        </ModalsContext.Provider>
+      </TodolistContext.Provider>
+    </Provider>
   )
 }
 

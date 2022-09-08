@@ -1,7 +1,9 @@
 import React, { useEffect, useRef, useContext } from 'react'
+import { connect } from 'react-redux'
 import { ModalsContext } from '../App'
+import { switchAboutModal } from '../redux/modal/modalActions'
 
-function Header() {
+function Header({ toggleAboutModal }) {
   const { dispatch: modalsDispatch } = useContext(ModalsContext)
   const handleCreateTaskModalOpen = () => {
     /**
@@ -12,7 +14,7 @@ function Header() {
   }
 
   const handleAboutModalOpen = () => {
-    modalsDispatch({ type: 'aboutSwitch', value: true })
+    toggleAboutModal(true)
   }
 
   const heartRef = useRef()
@@ -65,4 +67,10 @@ function Header() {
   )
 }
 
-export default React.memo(Header)
+const mapDispatchToProps = dispatch => {
+  return {
+    toggleAboutModal: switchTo => dispatch(switchAboutModal(switchTo))
+  }
+}
+
+export default connect(null, mapDispatchToProps)(Header)
