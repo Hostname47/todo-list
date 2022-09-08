@@ -9,7 +9,8 @@ function useInput(initialValue) {
       setValue(e.target.value)
     }
   }
-  const reset = () => setValue(initialValue)
+
+  const reset = (value=initialValue) => setValue(value)
 
   return [value, bind, reset]
 }

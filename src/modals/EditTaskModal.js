@@ -13,13 +13,23 @@ function EditTaskModal({ status, taskToEdit, switchModal }) {
 
   const [error, setError] = useState('')
   const [done, setDone] = useState(false)
-
+  const [title, titleBind, resetTitle] = useInput('')
+  const [notes, notesBind, resetNotes] = useInput('')
+  
   useEffect(() => {
-    setDone(taskToEdit.done)
+    /**
+     * The following condition is really useful to prevent the modal from rerendering when
+     * the taskToEdit is changed during closing because without checking status, the component
+     * will be rerendered after closing the modal and then the taskToEdit will be changed which
+     * will caused setDone and title&notes reset to change the state
+     */
+    if(status) {
+      setDone(taskToEdit.done)
+      resetTitle(taskToEdit.title)
+      resetNotes(taskToEdit.notes)
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [taskToEdit]);
-
-  const [title, titleBind, resetTitle] = useInput(taskToEdit.title)
-  const [notes, notesBind, resetNotes] = useInput(taskToEdit.notes)
 
   const handleEditTaskModalClose = () => {
     switchModal(false)
@@ -28,13 +38,13 @@ function EditTaskModal({ status, taskToEdit, switchModal }) {
   const handleSubmit = e => {
     e.preventDefault()
 
-    if(title === '') {
+    if(title.trim() === '') {
       setError('Task title field is required')
       return;
-    } else if(title.length > 40) {
+    } else if(title.trim().length > 40) {
       setError('Task title is too long')
       return;
-    } else if(notes.length > 40) {
+    } else if(notes.trim().length > 40) {
       setError('Task notes is too long')
       return;
     }
@@ -44,7 +54,7 @@ function EditTaskModal({ status, taskToEdit, switchModal }) {
     const updateButton = updateButtonRef.current
     const spinner = updateButton.querySelector('.spinner')
 
-    // Show spinner and disable the create button (those will be toggled when the store action finished)
+    // Show spinner and disable the update button (those will be toggled when the store action finished)
     spinner.classList.remove('none')
     updateButton.disabled = true
 
@@ -53,7 +63,7 @@ function EditTaskModal({ status, taskToEdit, switchModal }) {
 
     request.onerror = function (event) {
       setError('Oops something went wrong ! please try again or refresh your browser')
-    };    
+    };
 
     request.onupgradeneeded = function () {
       const db = request.result;
@@ -70,8 +80,8 @@ function EditTaskModal({ status, taskToEdit, switchModal }) {
 
       taskRequest.onsuccess = () => {
         const task = taskRequest.result
-        task.title = title
-        task.notes = notes
+        task.title = title.trim()
+        task.notes = notes.trim()
         task.done = done
         store.put(task)
 
@@ -84,6 +94,9 @@ function EditTaskModal({ status, taskToEdit, switchModal }) {
         messagesContext.dispatch({ type: 'regular', value: 'Task has been updated successfully' })
         todolistContext.dispatch({ type: 'refresh' })
         switchModal(false)
+        // Hide spinner and enable the update button
+        spinner.classList.add('none')
+        updateButton.disabled = false
 
         transaction.oncomplete = () => {
           db.close()
@@ -97,8 +110,8 @@ function EditTaskModal({ status, taskToEdit, switchModal }) {
     
     setError('')
     setDone(taskToEdit.done)
-    resetTitle()
-    resetNotes()
+    resetTitle(taskToEdit.title)
+    resetNotes(taskToEdit.notes)
   }
 
   console.log('--- Render Update Task Modal ---')
@@ -126,11 +139,11 @@ function EditTaskModal({ status, taskToEdit, switchModal }) {
             ) }
             <div className='mb8'>
               <label className='label-style-1' htmlFor='task-title'>What do you need to do ?</label>
-              <input type="text" id='task-title' { ...titleBind } className='input-style-1' placeholder='Title of your task that you want to do' value={ title } />
+              <input type="text" id='task-title' { ...titleBind } className='input-style-1' placeholder='Title of your task that you want to do' />
             </div>
             <div className='mb8'>
               <label className='label-style-1' htmlFor='task-note'>Task notes</label>
-              <textarea type="text" id='task-note' { ...notesBind } className='input-style-1' placeholder='Task notes' value={ notes }></textarea>
+              <textarea type="text" id='task-note' { ...notesBind } className='input-style-1' placeholder='Task notes'></textarea>
             </div>
             <label className='label-style-1 align-center g6' htmlFor='edit-task-title'>
               <span>Task done :</span>

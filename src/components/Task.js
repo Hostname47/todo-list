@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { connect } from 'react-redux'
-import { ModalsContext, TodolistContext } from '../App'
+import { TodolistContext } from '../App'
 import { switchEditTaskModal } from '../redux/modal/modalActions'
 
 function Task({ task, switchEditTaskModal }) {
@@ -26,7 +26,6 @@ function Task({ task, switchEditTaskModal }) {
   }, [task.done])
 
   const todolistContext = useContext(TodolistContext)
-  const modalsContext = useContext(ModalsContext)
 
   const handleCheckDone = e => {
     // Here we need to update the task in database and we set done when process finished with success
