@@ -1,12 +1,13 @@
 import React, { useRef, useState, useContext } from 'react'
 import * as ReactDOM from 'react-dom';
-import { MessagesContext, ModalsContext, TodolistContext } from '../App';
+import { connect } from 'react-redux';
+import { MessagesContext, TodolistContext } from '../App';
 import useInput from '../hooks/useInput';
+import { switchCreateTaskModal } from '../redux/modal/modalActions';
 
-function CreateTaskModal({ status }) {
+function CreateTaskModal({ status, switchModal }) {
   // Consum Modals Context provided from the root App component to control all the modals switches
   const { dispatch: messagesDispatch } = useContext(MessagesContext)
-  const { dispatch: modalsDispatch } = useContext(ModalsContext)
   const { dispatch: todolistDispatch } = useContext(TodolistContext)
 
   const createButtonRef = useRef(null)
@@ -16,8 +17,9 @@ function CreateTaskModal({ status }) {
   const [notes, notesBind,] = useInput('')
   
   const handleCreateTaskModalClose = () => {
-    modalsDispatch({ type: 'createTaskSwitch', value: false })
+    switchModal(false)
   }
+  
   const handleCreateTask = e => {
     e.preventDefault()
 
@@ -122,4 +124,16 @@ function CreateTaskModal({ status }) {
   ), document.getElementById('modal'));
 }
 
-export default CreateTaskModal
+const mapStateToProps = state => {
+  return {
+    status: state.modal.createTaskModalStatus
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    switchModal: switchTo => dispatch(switchCreateTaskModal(switchTo))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CreateTaskModal)

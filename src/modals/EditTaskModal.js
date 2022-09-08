@@ -1,28 +1,28 @@
-import React, { useContext, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import * as ReactDOM from 'react-dom';
-import { MessagesContext, ModalsContext, TodolistContext } from '../App';
+import { connect } from 'react-redux';
+import { MessagesContext, TodolistContext } from '../App';
 import useInput from '../hooks/useInput';
+import { switchEditTaskModal } from '../redux/modal/modalActions';
 
-function EditTaskModal({ status }) {
-  const modalsContext = useContext(ModalsContext)
+function EditTaskModal({ status, taskToEdit, switchModal }) {
   const messagesContext = useContext(MessagesContext)
   const todolistContext = useContext(TodolistContext)
-
-  const task = modalsContext.state.task
+  
   const updateButtonRef = useRef(null)
 
   const [error, setError] = useState('')
-  const [done, setDone] = useState(task.done)
+  const [done, setDone] = useState(false)
 
-  const [title, titleBind, resetTitle] = useInput(task.title)
-  const [notes, notesBind, resetNotes] = useInput(task.notes)
+  useEffect(() => {
+    setDone(taskToEdit.done)
+  }, [taskToEdit]);
+
+  const [title, titleBind, resetTitle] = useInput(taskToEdit.title)
+  const [notes, notesBind, resetNotes] = useInput(taskToEdit.notes)
 
   const handleEditTaskModalClose = () => {
-    modalsContext.dispatch({ type: 'editTaskSwitch', value: false })
-  }
-
-  const handletaskDoneChange = e => {
-    setDone(e.target.checked)
+    switchModal(false)
   }
 
   const handleSubmit = e => {
@@ -66,7 +66,7 @@ function EditTaskModal({ status }) {
       const transaction = db.transaction("tasks", "readwrite");
 
       const store = transaction.objectStore("tasks");
-      const taskRequest = store.get(task.id)
+      const taskRequest = store.get(taskToEdit.id)
 
       taskRequest.onsuccess = () => {
         const task = taskRequest.result
@@ -79,11 +79,11 @@ function EditTaskModal({ status }) {
          * After updating the task we need to:
          * 1. display a message to user task updates
          * 2. refresh list in Todolist component
-         * 3. close the create task modal
+         * 3. close the edit task modal
          */
         messagesContext.dispatch({ type: 'regular', value: 'Task has been updated successfully' })
-        modalsContext.dispatch({ type: 'editTaskSwitch', value: false })
         todolistContext.dispatch({ type: 'refresh' })
+        switchModal(false)
 
         transaction.oncomplete = () => {
           db.close()
@@ -96,7 +96,7 @@ function EditTaskModal({ status }) {
     e.preventDefault()
     
     setError('')
-    setDone(task.done)
+    setDone(taskToEdit.done)
     resetTitle()
     resetNotes()
   }
@@ -134,7 +134,7 @@ function EditTaskModal({ status }) {
             </div>
             <label className='label-style-1 align-center g6' htmlFor='edit-task-title'>
               <span>Task done :</span>
-              <input type='checkbox' id='edit-task-title' checked={ done ? 'checked' : '' } onChange={ handletaskDoneChange } />
+              <input type='checkbox' id='edit-task-title' checked={ done ? 'checked' : '' } onChange={ e => setDone(e.target.checked) } />
             </label>
             <div className='align-center g8'>
               <button type="submit" className='move-to-right button-style-1 green' ref={ updateButtonRef }>
@@ -154,4 +154,17 @@ function EditTaskModal({ status }) {
   ), document.getElementById('modal'));
 }
 
-export default EditTaskModal
+const mapStateToProps = state => {
+  return {
+    status: state.modal.editTaskModalStatus,
+    taskToEdit: state.modal.taskToEdit
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    switchModal: switchTo => dispatch(switchEditTaskModal(switchTo))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditTaskModal)

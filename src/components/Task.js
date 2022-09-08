@@ -1,7 +1,9 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
+import { connect } from 'react-redux'
 import { ModalsContext, TodolistContext } from '../App'
+import { switchEditTaskModal } from '../redux/modal/modalActions'
 
-function Task({ task }) {
+function Task({ task, switchEditTaskModal }) {
   const [done, setDone] = useState(task.done)
   const [displayNotes, setDisplayNotes] = useState(false)
 
@@ -103,7 +105,7 @@ function Task({ task }) {
   }
 
   const handleEditTaskModalOpen = () => {
-    modalsContext.dispatch({ type: 'editTaskSwitch', value: true, task })
+    switchEditTaskModal(true, task)
   }
 
   console.log('--- Render Task ---')
@@ -141,4 +143,10 @@ function Task({ task }) {
   )
 }
 
-export default React.memo(Task)
+const mapDispatchToProps = dispatch => {
+  return {
+    switchEditTaskModal: (switchTo, task) => dispatch(switchEditTaskModal(switchTo, task))
+  }
+}
+
+export default connect(null, mapDispatchToProps)(Task)

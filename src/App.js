@@ -33,8 +33,8 @@ function App() {
             <Messages />
             <Todolist />
             { <AboutModal /> }
-            { <CreateTaskModal status={ modalsState.createTask }/> }
-            { <EditTaskModal status={ modalsState.editTask } task={ modalsState.task } /> }
+            { <CreateTaskModal /> }
+            { <EditTaskModal /> }
           </MessagesContext.Provider>
         </ModalsContext.Provider>
       </TodolistContext.Provider>

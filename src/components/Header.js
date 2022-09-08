@@ -1,20 +1,14 @@
-import React, { useEffect, useRef, useContext } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { connect } from 'react-redux'
-import { ModalsContext } from '../App'
-import { switchAboutModal } from '../redux/modal/modalActions'
+import { switchAboutModal, switchCreateTaskModal } from '../redux/modal/modalActions'
 
-function Header({ toggleAboutModal }) {
-  const { dispatch: modalsDispatch } = useContext(ModalsContext)
-  const handleCreateTaskModalOpen = () => {
-    /**
-     * Dispatch modals context will cause the App component to rerender and all its
-     * subcomponents which is not efficient at all (same thing with about modal switch)
-     */
-    modalsDispatch({ type: 'createTaskSwitch', value: true })
+function Header({ switchAboutModal, switchCreateTaskModal }) {
+  const handleAboutModalOpen = () => {
+    switchAboutModal(true)
   }
 
-  const handleAboutModalOpen = () => {
-    toggleAboutModal(true)
+  const handleCreateTaskModalOpen = () => {
+    switchCreateTaskModal(true)
   }
 
   const heartRef = useRef()
@@ -69,7 +63,8 @@ function Header({ toggleAboutModal }) {
 
 const mapDispatchToProps = dispatch => {
   return {
-    toggleAboutModal: switchTo => dispatch(switchAboutModal(switchTo))
+    switchAboutModal: switchTo => dispatch(switchAboutModal(switchTo)),
+    switchCreateTaskModal: switchTo => dispatch(switchCreateTaskModal(switchTo)),
   }
 }
 
