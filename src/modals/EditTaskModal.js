@@ -1,14 +1,12 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import * as ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
-import { MessagesContext, TodolistContext } from '../App';
 import useInput from '../hooks/useInput';
+import { switchMessageStatus } from '../redux/message/messageActions';
 import { switchEditTaskModal } from '../redux/modal/modalActions';
+import { fetchTodolist } from '../redux/todolist/todolistActions';
 
-function EditTaskModal({ status, taskToEdit, switchModal }) {
-  const messagesContext = useContext(MessagesContext)
-  const todolistContext = useContext(TodolistContext)
-  
+function EditTaskModal({ status, taskToEdit, switchModal, switchMessage, fetchTasks }) {
   const updateButtonRef = useRef(null)
 
   const [error, setError] = useState('')
@@ -91,8 +89,8 @@ function EditTaskModal({ status, taskToEdit, switchModal }) {
          * 2. refresh list in Todolist component
          * 3. close the edit task modal
          */
-        messagesContext.dispatch({ type: 'regular', value: 'Task has been updated successfully' })
-        todolistContext.dispatch({ type: 'refresh' })
+        switchMessage(true, 'Task has been updated successfully', 'regular')
+        fetchTasks()
         switchModal(false)
         // Hide spinner and enable the update button
         spinner.classList.add('none')
@@ -176,7 +174,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    switchModal: switchTo => dispatch(switchEditTaskModal(switchTo))
+    switchModal: switchTo => dispatch(switchEditTaskModal(switchTo)),
+    fetchTasks: () => dispatch(fetchTodolist()),
+    switchMessage: (status, message, messageType) => dispatch(switchMessageStatus(status, message, messageType))
   }
 }
 

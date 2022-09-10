@@ -1,20 +1,18 @@
-import React, { useRef, useState, useContext } from 'react'
+import React, { useRef, useState } from 'react'
 import * as ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
-import { MessagesContext, TodolistContext } from '../App';
 import useInput from '../hooks/useInput';
+import { switchMessageStatus } from '../redux/message/messageActions';
 import { switchCreateTaskModal } from '../redux/modal/modalActions';
+import { fetchTodolist } from '../redux/todolist/todolistActions';
 
-function CreateTaskModal({ status, switchModal }) {
+function CreateTaskModal({ status, switchModal, switchMessage, fetchTasks }) {
   // Consum Modals Context provided from the root App component to control all the modals switches
-  const { dispatch: messagesDispatch } = useContext(MessagesContext)
-  const { dispatch: todolistDispatch } = useContext(TodolistContext)
-
   const createButtonRef = useRef(null)
   // State (useInput is a custom hook)
   const [error, setError] = useState('')
-  const [title, titleBind,] = useInput('')
-  const [notes, notesBind,] = useInput('')
+  const [title, titleBind, resetTitle] = useInput('')
+  const [notes, notesBind, resetNotes] = useInput('')
   
   const handleCreateTaskModalClose = () => {
     switchModal(false)
@@ -50,12 +48,6 @@ function CreateTaskModal({ status, switchModal }) {
       setError('Oops something went wrong ! please try again or refresh your browser')
     };    
 
-    request.onupgradeneeded = function () {
-      const db = request.result;
-      const store = db.createObjectStore("tasks", { keyPath: "id", autoIncrement: true });
-      store.createIndex("done_tasks", ["done"], { unique: false });
-    };
-
     request.onsuccess = function() {
       const db = request.result;
       const transaction = db.transaction("tasks", "readwrite");
@@ -69,9 +61,11 @@ function CreateTaskModal({ status, switchModal }) {
        * 2. refresh list in Todolist component
        * 3. close the create task modal
        */
-      messagesDispatch({ type: 'success', value: 'Task has been created successfully' })
+      fetchTasks()
+      resetTitle()
+      resetNotes()
+      switchMessage(true, 'Task has been created successfully', 'success')
       handleCreateTaskModalClose()
-      todolistDispatch({ type: 'refresh' })
 
       transaction.oncomplete = () => {
         db.close()
@@ -132,7 +126,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    switchModal: switchTo => dispatch(switchCreateTaskModal(switchTo))
+    switchModal: switchTo => dispatch(switchCreateTaskModal(switchTo)),
+    fetchTasks: () => dispatch(fetchTodolist()),
+    switchMessage: (status, message, messageType) => dispatch(switchMessageStatus(status, message, messageType))
   }
 }
 

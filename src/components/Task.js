@@ -1,9 +1,10 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { connect } from 'react-redux'
-import { TodolistContext } from '../App'
+import { switchMessageStatus } from '../redux/message/messageActions'
 import { switchEditTaskModal } from '../redux/modal/modalActions'
+import { fetchTodolist } from '../redux/todolist/todolistActions'
 
-function Task({ task, switchEditTaskModal }) {
+function Task({ task, switchEditTaskModal, switchMessage, fetchTasks }) {
   const [done, setDone] = useState(task.done)
   const [displayNotes, setDisplayNotes] = useState(false)
 
@@ -11,7 +12,7 @@ function Task({ task, switchEditTaskModal }) {
   const deleteContainerRef = useRef(null)
 
   /**
-   * The following effect is really important, becuase when the user update the done in
+   * The following effect is really important, because when the user update the done in
    * edit task modal, it will fire refresh action of the todolist reducer which causes
    * the todolist to re-render, and becuase the task edited is a child of todolist component,
    * it will also re-rendered, BUT the problem is that the done state in Task component will
@@ -25,8 +26,6 @@ function Task({ task, switchEditTaskModal }) {
     setDone(task.done)
   }, [task.done])
 
-  const todolistContext = useContext(TodolistContext)
-
   const handleCheckDone = e => {
     // Here we need to update the task in database and we set done when process finished with success
     const doneValue = e.target.checked
@@ -39,11 +38,6 @@ function Task({ task, switchEditTaskModal }) {
     setDone(doneValue)
 
     const request = indexedDB.open('todos', 1)
-    request.onupgradeneeded = function () {
-      const db = request.result;
-      const store = db.createObjectStore("tasks", { keyPath: "id", autoIncrement: true });
-      store.createIndex("done_tasks", ["done"], { unique: false });
-    };
     request.onsuccess = function() {
       const db = request.result;
       const transaction = db.transaction("tasks", 'readwrite');
@@ -81,11 +75,7 @@ function Task({ task, switchEditTaskModal }) {
    */
   const handleDeleteTask = e => {
     const request = indexedDB.open('todos', 1)
-    request.onupgradeneeded = function () {
-      const db = request.result;
-      const store = db.createObjectStore("tasks", { keyPath: "id", autoIncrement: true });
-      store.createIndex("done_tasks", ["done"], { unique: false });
-    };
+
     request.onsuccess = function() {
       const db = request.result;
       const transaction = db.transaction("tasks", 'readwrite');
@@ -94,7 +84,8 @@ function Task({ task, switchEditTaskModal }) {
       const dataRequest = store.delete(task.id)
 
       dataRequest.onsuccess = () => {
-        todolistContext.dispatch({ type: 'refresh' })
+        switchMessage(true, 'Task has been deleted successfully', 'regular')
+        fetchTasks()
       }
 
       transaction.oncomplete = () => {
@@ -144,7 +135,9 @@ function Task({ task, switchEditTaskModal }) {
 
 const mapDispatchToProps = dispatch => {
   return {
-    switchEditTaskModal: (switchTo, task) => dispatch(switchEditTaskModal(switchTo, task))
+    switchEditTaskModal: (switchTo, task) => dispatch(switchEditTaskModal(switchTo, task)),
+    fetchTasks: () => dispatch(fetchTodolist()),
+    switchMessage: (status, message, messageType) => dispatch(switchMessageStatus(status, message, messageType))
   }
 }
 
