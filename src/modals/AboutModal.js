@@ -4,12 +4,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import { switchAboutModal } from '../features/modal/modalSlice'
 
 function AboutModal() {
-  const status = useSelector(status => status.modal.aboutModalStatus)
+  const status = useSelector(state => state.modal.aboutModalStatus)
   const dispatch = useDispatch()
   const switchModal = switchTo => {
     dispatch(switchAboutModal({ status: switchTo }))
   }
-  console.log('--- Render About Modal ---', status)
+  console.log('--- Render About Modal ---')
 
   return status && ReactDOM.createPortal((
     <div className='absolute-full-screen full-center modal-box'>

@@ -1,21 +1,20 @@
 import React, { useRef, useState } from 'react'
 import * as ReactDOM from 'react-dom';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { switchCreateTaskModal } from '../features/modal/modalSlice';
 import useInput from '../hooks/useInput';
-import { switchMessageStatus } from '../redux/message/messageActions';
-import { switchCreateTaskModal } from '../redux/modal/modalActions';
-import { fetchTodolist } from '../redux/todolist/todolistActions';
+import { switchMessageStatus } from '../features/message/messageSlice';
 
-function CreateTaskModal({ status, switchModal, switchMessage, fetchTasks }) {
-  // Consum Modals Context provided from the root App component to control all the modals switches
+function CreateTaskModal() {
+  const dispatch = useDispatch()
+  const status = useSelector(state => state.modal.createTaskModalStatus)
   const createButtonRef = useRef(null)
-  // State (useInput is a custom hook)
   const [error, setError] = useState('')
   const [title, titleBind, resetTitle] = useInput('')
   const [notes, notesBind, resetNotes] = useInput('')
   
   const handleCreateTaskModalClose = () => {
-    switchModal(false)
+    dispatch(switchCreateTaskModal({state: false}))
   }
   
   const handleCreateTask = e => {
@@ -61,10 +60,10 @@ function CreateTaskModal({ status, switchModal, switchMessage, fetchTasks }) {
        * 2. refresh list in Todolist component
        * 3. close the create task modal
        */
-      fetchTasks()
+      // fetchTasks()
       resetTitle()
       resetNotes()
-      switchMessage(true, 'Task has been created successfully', 'success')
+      dispatch(switchMessageStatus({ status: true, type: 'success', message: 'Task has been created successfully' }))
       handleCreateTaskModalClose()
 
       transaction.oncomplete = () => {
@@ -118,18 +117,4 @@ function CreateTaskModal({ status, switchModal, switchMessage, fetchTasks }) {
   ), document.getElementById('modal'));
 }
 
-const mapStateToProps = state => {
-  return {
-    status: state.modal.createTaskModalStatus
-  }
-}
-
-const mapDispatchToProps = dispatch => {
-  return {
-    switchModal: switchTo => dispatch(switchCreateTaskModal(switchTo)),
-    fetchTasks: () => dispatch(fetchTodolist()),
-    switchMessage: (status, message, messageType) => dispatch(switchMessageStatus(status, message, messageType))
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(CreateTaskModal)
+export default CreateTaskModal

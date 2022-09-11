@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import { useDispatch } from 'react-redux'
-import { switchAboutModal } from '../features/modal/modalSlice'
-// import { switchAboutModal, switchCreateTaskModal } from '../redux/modal/modalActions'
+import { switchAboutModal, switchCreateTaskModal } from '../features/modal/modalSlice'
 
 function Header() {
   const dispatch = useDispatch()
@@ -11,7 +10,7 @@ function Header() {
   }
 
   const handleCreateTaskModalOpen = () => {
-    // switchCreateTaskModal(true)
+    dispatch(switchCreateTaskModal({status: true}))
   }
 
   const heartRef = useRef()

@@ -16,11 +16,11 @@ function App() {
   return (
     <Provider store={ store }>
       <Header />
-      {/* <Messages />
-      <Todolist /> */}
-      { <AboutModal /> }
-      {/* { <CreateTaskModal /> }
-      { <EditTaskModal /> } */}
+      <Messages />
+      {/* <Todolist /> */}
+      <AboutModal />
+      <CreateTaskModal />
+      {/* { <EditTaskModal /> } */}
     </Provider>
   )
 }
