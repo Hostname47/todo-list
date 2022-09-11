@@ -1,14 +1,16 @@
 import React, { useEffect } from 'react'
 import Task from './Task'
-import { connect } from 'react-redux'
-import { fetchTodolist } from '../redux/todolist/todolistActions'
+import { useSelector, useDispatch } from 'react-redux'
+import { fetchTodolist } from '../features/todolist/todolistSlice'
 
-function Todolist({ todolist, fetchTasks }) {
-  /**
-   * Fetch todo list from IndexedDB; but for now let's just pretend :)
-   */
+function Todolist() {
+  const todolist = useSelector(state => state.todolist)
+  const dispatch = useDispatch()
+
   useEffect(() => {
-    fetchTasks()
+    setTimeout(() => {
+      dispatch(fetchTodolist())
+    }, 1000)
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -49,16 +51,4 @@ function Todolist({ todolist, fetchTasks }) {
   )
 }
 
-const mapStateToProps = state => {
-  return {
-    todolist: state.todolist
-  }
-}
-
-const mapDispatchToProps = dispatch => {
-  return {
-    fetchTasks: () => dispatch(fetchTodolist())
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Todolist)
+export default Todolist

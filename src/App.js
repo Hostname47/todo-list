@@ -17,7 +17,7 @@ function App() {
     <Provider store={ store }>
       <Header />
       <Messages />
-      {/* <Todolist /> */}
+      <Todolist />
       <AboutModal />
       <CreateTaskModal />
       {/* { <EditTaskModal /> } */}
