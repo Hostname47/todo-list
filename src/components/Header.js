@@ -1,14 +1,17 @@
 import React, { useEffect, useRef } from 'react'
-import { connect } from 'react-redux'
-import { switchAboutModal, switchCreateTaskModal } from '../redux/modal/modalActions'
+import { useDispatch } from 'react-redux'
+import { switchAboutModal } from '../features/modal/modalSlice'
+// import { switchAboutModal, switchCreateTaskModal } from '../redux/modal/modalActions'
 
-function Header({ switchAboutModal, switchCreateTaskModal }) {
+function Header() {
+  const dispatch = useDispatch()
+
   const handleAboutModalOpen = () => {
-    switchAboutModal(true)
+    dispatch(switchAboutModal({status: true}))
   }
 
   const handleCreateTaskModalOpen = () => {
-    switchCreateTaskModal(true)
+    // switchCreateTaskModal(true)
   }
 
   const heartRef = useRef()
@@ -61,11 +64,4 @@ function Header({ switchAboutModal, switchCreateTaskModal }) {
   )
 }
 
-const mapDispatchToProps = dispatch => {
-  return {
-    switchAboutModal: switchTo => dispatch(switchAboutModal(switchTo)),
-    switchCreateTaskModal: switchTo => dispatch(switchCreateTaskModal(switchTo)),
-  }
-}
-
-export default connect(null, mapDispatchToProps)(Header)
+export default Header

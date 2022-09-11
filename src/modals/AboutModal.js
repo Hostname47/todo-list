@@ -1,9 +1,14 @@
 import React from 'react'
 import * as ReactDOM from 'react-dom';
-import { connect } from 'react-redux';
-import { switchAboutModal } from '../redux/modal/modalActions';
+import { useSelector, useDispatch } from 'react-redux';
+import { switchAboutModal } from '../features/modal/modalSlice'
 
-function AboutModal({ status, switchModal }) {
+function AboutModal() {
+  const status = useSelector(status => status.modal.aboutModalStatus)
+  const dispatch = useDispatch()
+  const switchModal = switchTo => {
+    dispatch(switchAboutModal({ status: switchTo }))
+  }
   console.log('--- Render About Modal ---', status)
 
   return status && ReactDOM.createPortal((
@@ -33,16 +38,4 @@ function AboutModal({ status, switchModal }) {
   ), document.getElementById('modal'));
 }
 
-const mapStateToProps = state => {
-  return {
-    status: state.modal.aboutModalStatus
-  }
-}
-
-const mapDispatchToProps = dispatch => {
-  return {
-    switchModal: switchTo => dispatch(switchAboutModal(switchTo))
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(AboutModal)
+export default AboutModal
