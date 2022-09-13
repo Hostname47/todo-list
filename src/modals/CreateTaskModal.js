@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { switchCreateTaskModal } from '../features/modal/modalSlice';
 import useInput from '../hooks/useInput';
 import { switchMessageStatus } from '../features/message/messageSlice';
+import { refreshTodolistTasks } from '../features/todolist/todolistSlice';
 
 function CreateTaskModal() {
   const dispatch = useDispatch()
@@ -60,7 +61,7 @@ function CreateTaskModal() {
        * 2. refresh list in Todolist component
        * 3. close the create task modal
        */
-      // fetchTasks()
+      dispatch(refreshTodolistTasks())
       resetTitle()
       resetNotes()
       dispatch(switchMessageStatus({ status: true, type: 'success', message: 'Task has been created successfully' }))

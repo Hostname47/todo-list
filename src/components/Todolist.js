@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import Task from './Task'
 import { useSelector, useDispatch } from 'react-redux'
-import { fetchTodolist } from '../features/todolist/todolistSlice'
+import { fetchTodolistTasks } from '../features/todolist/todolistSlice'
 
 function Todolist() {
   const todolist = useSelector(state => state.todolist)
@@ -9,7 +9,7 @@ function Todolist() {
 
   useEffect(() => {
     setTimeout(() => {
-      dispatch(fetchTodolist())
+      dispatch(fetchTodolistTasks())
     }, 1000)
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
