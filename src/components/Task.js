@@ -1,12 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { connect } from 'react-redux'
-import { switchMessageStatus } from '../redux/message/messageActions'
-import { switchEditTaskModal } from '../redux/modal/modalActions'
-import { fetchTodolist } from '../redux/todolist/todolistActions'
+import { useDispatch } from 'react-redux'
+import { switchMessageStatus } from '../features/message/messageSlice'
+import { switchEditTaskModal } from '../features/modal/modalSlice'
+import { refreshTodolistTasks } from '../features/todolist/todolistSlice'
 
-function Task({ task, switchEditTaskModal, switchMessage, fetchTasks }) {
+function Task({ task }) {
   const [done, setDone] = useState(task.done)
   const [displayNotes, setDisplayNotes] = useState(false)
+  const dispatch = useDispatch()
 
   const titleRef = useRef(null)
   const deleteContainerRef = useRef(null)
@@ -84,8 +85,8 @@ function Task({ task, switchEditTaskModal, switchMessage, fetchTasks }) {
       const dataRequest = store.delete(task.id)
 
       dataRequest.onsuccess = () => {
-        switchMessage(true, 'Task has been deleted successfully', 'regular')
-        fetchTasks()
+        dispatch(switchMessageStatus({ status: true, type: 'regular', message: 'Task has been deleted successfully' }))
+        dispatch(refreshTodolistTasks())
       }
 
       transaction.oncomplete = () => {
@@ -95,7 +96,7 @@ function Task({ task, switchEditTaskModal, switchMessage, fetchTasks }) {
   }
 
   const handleEditTaskModalOpen = () => {
-    switchEditTaskModal(true, task)
+    dispatch(switchEditTaskModal({ status: true, task: task }))
   }
 
   console.log('--- Render Task ---')
@@ -133,12 +134,4 @@ function Task({ task, switchEditTaskModal, switchMessage, fetchTasks }) {
   )
 }
 
-const mapDispatchToProps = dispatch => {
-  return {
-    switchEditTaskModal: (switchTo, task) => dispatch(switchEditTaskModal(switchTo, task)),
-    fetchTasks: () => dispatch(fetchTodolist()),
-    switchMessage: (status, message, messageType) => dispatch(switchMessageStatus(status, message, messageType))
-  }
-}
-
-export default connect(null, mapDispatchToProps)(Task)
+export default Task

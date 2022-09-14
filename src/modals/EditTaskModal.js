@@ -1,13 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react'
 import * as ReactDOM from 'react-dom';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import useInput from '../hooks/useInput';
-import { switchMessageStatus } from '../redux/message/messageActions';
-import { switchEditTaskModal } from '../redux/modal/modalActions';
-import { fetchTodolist } from '../redux/todolist/todolistActions';
+import { switchEditTaskModal } from '../features/modal/modalSlice';
+import { switchMessageStatus } from '../features/message/messageSlice';
+import { refreshTodolistTasks } from '../features/todolist/todolistSlice';
 
-function EditTaskModal({ status, taskToEdit, switchModal, switchMessage, fetchTasks }) {
+function EditTaskModal() {
   const updateButtonRef = useRef(null)
+  const taskToEdit = useSelector(state => state.modal.taskToEdit)
+  const editTaskModalStatus = useSelector(state => state.modal.editTaskModalStatus)
+  const dispatch = useDispatch()
 
   const [error, setError] = useState('')
   const [done, setDone] = useState(false)
@@ -21,7 +24,7 @@ function EditTaskModal({ status, taskToEdit, switchModal, switchMessage, fetchTa
      * will be rerendered after closing the modal and then the taskToEdit will be changed which
      * will caused setDone and title&notes reset to change the state
      */
-    if(status) {
+    if(editTaskModalStatus) {
       setDone(taskToEdit.done)
       resetTitle(taskToEdit.title)
       resetNotes(taskToEdit.notes)
@@ -30,7 +33,7 @@ function EditTaskModal({ status, taskToEdit, switchModal, switchMessage, fetchTa
   }, [taskToEdit]);
 
   const handleEditTaskModalClose = () => {
-    switchModal(false)
+    dispatch(switchEditTaskModal({ status: false, task: null }))
   }
 
   const handleSubmit = e => {
@@ -89,9 +92,9 @@ function EditTaskModal({ status, taskToEdit, switchModal, switchMessage, fetchTa
          * 2. refresh list in Todolist component
          * 3. close the edit task modal
          */
-        switchMessage(true, 'Task has been updated successfully', 'regular')
-        fetchTasks()
-        switchModal(false)
+        dispatch(switchMessageStatus({ status: true, type: 'success', message: 'Task has been updated successfully' }))
+        dispatch(refreshTodolistTasks())
+        handleEditTaskModalClose()
         // Hide spinner and enable the update button
         spinner.classList.add('none')
         updateButton.disabled = false
@@ -113,8 +116,7 @@ function EditTaskModal({ status, taskToEdit, switchModal, switchMessage, fetchTa
   }
 
   console.log('--- Render Update Task Modal ---')
-
-  return status && ReactDOM.createPortal((
+  return editTaskModalStatus && ReactDOM.createPortal((
     <div className='absolute-full-screen full-center modal-box'>
       <div className='absolute-full-screen modal-overlay'></div>
       <div className='relative modal-style-1-container'>
@@ -165,19 +167,4 @@ function EditTaskModal({ status, taskToEdit, switchModal, switchMessage, fetchTa
   ), document.getElementById('modal'));
 }
 
-const mapStateToProps = state => {
-  return {
-    status: state.modal.editTaskModalStatus,
-    taskToEdit: state.modal.taskToEdit
-  }
-}
-
-const mapDispatchToProps = dispatch => {
-  return {
-    switchModal: switchTo => dispatch(switchEditTaskModal(switchTo)),
-    fetchTasks: () => dispatch(fetchTodolist()),
-    switchMessage: (status, message, messageType) => dispatch(switchMessageStatus(status, message, messageType))
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(EditTaskModal)
+export default EditTaskModal

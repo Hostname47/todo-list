@@ -15,7 +15,7 @@ function CreateTaskModal() {
   const [notes, notesBind, resetNotes] = useInput('')
   
   const handleCreateTaskModalClose = () => {
-    dispatch(switchCreateTaskModal({state: false}))
+    dispatch(switchCreateTaskModal({status: false}))
   }
   
   const handleCreateTask = e => {

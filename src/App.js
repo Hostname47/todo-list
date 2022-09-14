@@ -20,7 +20,7 @@ function App() {
       <Todolist />
       <AboutModal />
       <CreateTaskModal />
-      {/* { <EditTaskModal /> } */}
+      <EditTaskModal />
     </Provider>
   )
 }

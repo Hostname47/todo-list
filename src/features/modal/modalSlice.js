@@ -21,9 +21,13 @@ const modalSlice = createSlice({
     },
     switchCreateTaskModal: (state, action) => {
       state.createTaskModalStatus = action.payload.status
+    },
+    switchEditTaskModal: (state, action) => {
+      state.editTaskModalStatus = action.payload.status
+      state.taskToEdit = action.payload.task
     }
   }
 })
 
 export default modalSlice.reducer
-export const { switchAboutModal, switchCreateTaskModal } = modalSlice.actions
+export const { switchAboutModal, switchCreateTaskModal, switchEditTaskModal } = modalSlice.actions
