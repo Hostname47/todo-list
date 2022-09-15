@@ -7,6 +7,7 @@ import { switchMessageStatus } from '../features/message/messageSlice';
 import { refreshTodolistTasks } from '../features/todolist/todolistSlice';
 import StyledButton from '../components/styles/Button/StyledButton.styled';
 import TextButton from '../components/styles/Button/TextButton.styled';
+import useModalEsc from '../hooks/useModalEsc';
 
 function EditTaskModal() {
   const updateButtonRef = useRef(null)
@@ -36,19 +37,10 @@ function EditTaskModal() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [taskToEdit]);
 
-  // Close modal when esc button clicked
-  useEffect(() => {
-    function handleEscapeKey(event) {
-      if(event.code === 'Escape') {
-        dispatch(switchEditTaskModal({ status: false }))
-      }
-    }
+  useModalEsc(() => {
+    dispatch(switchEditTaskModal({ status: false }))
+  })
   
-    document.addEventListener('keydown', handleEscapeKey)
-    return () => document.removeEventListener('keydown', handleEscapeKey)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
   const handleEditTaskModalClose = () => {
     dispatch(switchEditTaskModal({ status: false, task: null }))
   }

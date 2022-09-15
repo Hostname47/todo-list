@@ -7,6 +7,7 @@ import { switchMessageStatus } from '../features/message/messageSlice';
 import { refreshTodolistTasks } from '../features/todolist/todolistSlice';
 import ButtonStyled from '../components/styles/Button/StyledButton.styled';
 import TextButton from '../components/styles/Button/TextButton.styled';
+import useModalEsc from '../hooks/useModalEsc';
 
 function CreateTaskModal() {
   const dispatch = useDispatch()
@@ -77,17 +78,9 @@ function CreateTaskModal() {
     }
   }
 
-  useEffect(() => {
-    function handleEscapeKey(event) {
-      if(event.code === 'Escape') {
-        dispatch(switchCreateTaskModal({ status: false }))
-      }
-    }
-  
-    document.addEventListener('keydown', handleEscapeKey)
-    return () => document.removeEventListener('keydown', handleEscapeKey)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  useModalEsc(() => {
+    dispatch(switchCreateTaskModal({ status: false }))
+  })
 
   // Improve accessibility : focus title text when modal opened
   useEffect(() => {

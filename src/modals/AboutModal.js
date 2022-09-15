@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react'
 import * as ReactDOM from 'react-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { switchAboutModal } from '../features/modal/modalSlice'
+import useModalEsc from '../hooks/useModalEsc';
 
 function AboutModal() {
   const status = useSelector(state => state.modal.aboutModalStatus)
@@ -11,17 +12,9 @@ function AboutModal() {
     dispatch(switchAboutModal({ status: switchTo }))
   }
 
-  useEffect(() => {
-    function handleEscapeKey(event) {
-      if(event.code === 'Escape') {
-        dispatch(switchAboutModal({ status: false }))
-      }
-    }
-  
-    document.addEventListener('keydown', handleEscapeKey)
-    return () => document.removeEventListener('keydown', handleEscapeKey)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  useModalEsc(() => {
+    dispatch(switchAboutModal({ status: false }))
+  })
 
   useEffect(() => {
     if(status) {
