@@ -5,6 +5,8 @@ import useInput from '../hooks/useInput';
 import { switchEditTaskModal } from '../features/modal/modalSlice';
 import { switchMessageStatus } from '../features/message/messageSlice';
 import { refreshTodolistTasks } from '../features/todolist/todolistSlice';
+import StyledButton from '../components/styles/Button/StyledButton.styled';
+import TextButton from '../components/styles/Button/TextButton.styled';
 
 function EditTaskModal() {
   const updateButtonRef = useRef(null)
@@ -150,15 +152,15 @@ function EditTaskModal() {
               <input type='checkbox' id='edit-task-title' checked={ done ? 'checked' : '' } onChange={ e => setDone(e.target.checked) } />
             </label>
             <div className='align-center g8'>
-              <button type="submit" className='move-to-right button-style-1 green' ref={ updateButtonRef }>
+              <StyledButton type="submit" className='move-to-right green' ref={ updateButtonRef }>
                 <svg className="spinner size14 none rotate" fill="none" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" stroke="currentColor" strokeOpacity="0.25" strokeWidth="2" vectorEffect="non-scaling-stroke"></circle><path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" vectorEffect="non-scaling-stroke"></path></svg>
                 <span>Update task</span>
-              </button>
-              <button className='button-style-1' onClick={ handleRestore }>
+              </StyledButton>
+              <StyledButton onClick={ handleRestore }>
                 <svg className="spinner size14 none rotate" fill="none" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" stroke="currentColor" strokeOpacity="0.25" strokeWidth="2" vectorEffect="non-scaling-stroke"></circle><path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" vectorEffect="non-scaling-stroke"></path></svg>
                 <span>Restore task informations</span>
-              </button>
-              <button onClick={ handleEditTaskModalClose }>cancel</button>
+              </StyledButton>
+              <TextButton onClick={ handleEditTaskModalClose }>cancel</TextButton>
             </div>
           </form>
         </div>
