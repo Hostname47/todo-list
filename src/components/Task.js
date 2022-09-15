@@ -69,7 +69,17 @@ function Task({ task }) {
   }
 
   const handleDeleteContainer = (e, toggle) => {
-    deleteContainerRef.current.style.marginLeft = toggle ? '0px' : '-159px';
+    const container = deleteContainerRef.current
+    /**
+     * Replacing none class with invisible for accessibility purposes
+     */
+    if(toggle) {
+      container.classList.remove('invisible')
+      container.style.marginLeft = '0px'
+    } else {
+      container.style.marginLeft = '-159px'
+      setTimeout(() => container.classList.add('invisible'), 200)
+    }
   }
 
   /**
@@ -103,7 +113,7 @@ function Task({ task }) {
   console.log('--- Render Task ---')
   return (
     <div className="todo-item-container">
-      <div className='delete-container' ref={ deleteContainerRef }>
+      <div className='delete-container invisible' ref={ deleteContainerRef }>
         <span style={{ width: 'max-content', marginRight: '6px', paddingLeft: '8px' }}>Delete task?</span>
         <button className='flat-button-style red' onClick={ handleDeleteTask }>Yes</button>
         <button className='flat-button-style' onClick={ e => handleDeleteContainer(e, false) }>No</button>

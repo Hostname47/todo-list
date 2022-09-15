@@ -10,6 +10,7 @@ import TextButton from '../components/styles/Button/TextButton.styled';
 
 function EditTaskModal() {
   const updateButtonRef = useRef(null)
+  const titleRef = useRef(null)
   const taskToEdit = useSelector(state => state.modal.taskToEdit)
   const editTaskModalStatus = useSelector(state => state.modal.editTaskModalStatus)
   const dispatch = useDispatch()
@@ -30,9 +31,23 @@ function EditTaskModal() {
       setDone(taskToEdit.done)
       resetTitle(taskToEdit.title)
       resetNotes(taskToEdit.notes)
+      titleRef.current.focus()
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [taskToEdit]);
+
+  // Close modal when esc button clicked
+  useEffect(() => {
+    function handleEscapeKey(event) {
+      if(event.code === 'Escape') {
+        dispatch(switchEditTaskModal({ status: false }))
+      }
+    }
+  
+    document.addEventListener('keydown', handleEscapeKey)
+    return () => document.removeEventListener('keydown', handleEscapeKey)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const handleEditTaskModalClose = () => {
     dispatch(switchEditTaskModal({ status: false, task: null }))
@@ -141,7 +156,7 @@ function EditTaskModal() {
             ) }
             <div className='mb8'>
               <label className='label-style-1' htmlFor='task-title'>What do you need to do ?</label>
-              <input type="text" id='task-title' { ...titleBind } className='input-style-1' placeholder='Title of your task that you want to do' />
+              <input type="text" id='task-title' { ...titleBind } className='input-style-1' placeholder='Title of your task that you want to do' ref={ titleRef } />
             </div>
             <div className='mb8'>
               <label className='label-style-1' htmlFor='task-note'>Task notes</label>

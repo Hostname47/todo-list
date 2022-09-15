@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import * as ReactDOM from 'react-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { switchCreateTaskModal } from '../features/modal/modalSlice';
@@ -12,6 +12,8 @@ function CreateTaskModal() {
   const dispatch = useDispatch()
   const status = useSelector(state => state.modal.createTaskModalStatus)
   const createButtonRef = useRef(null)
+  const titleRef = useRef(null)
+
   const [error, setError] = useState('')
   const [title, titleBind, resetTitle] = useInput('')
   const [notes, notesBind, resetNotes] = useInput('')
@@ -75,6 +77,25 @@ function CreateTaskModal() {
     }
   }
 
+  useEffect(() => {
+    function handleEscapeKey(event) {
+      if(event.code === 'Escape') {
+        dispatch(switchCreateTaskModal({ status: false }))
+      }
+    }
+  
+    document.addEventListener('keydown', handleEscapeKey)
+    return () => document.removeEventListener('keydown', handleEscapeKey)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  // Improve accessibility : focus title text when modal opened
+  useEffect(() => {
+    if(status) {
+      titleRef.current.focus()
+    }
+  }, [status])
+  
   console.log('--- Render Create Task Modal ---')
   return status && ReactDOM.createPortal((
     <div className='absolute-full-screen full-center modal-box'>
@@ -100,7 +121,7 @@ function CreateTaskModal() {
             ) }
             <div className='mb8'>
               <label className='label-style-1' htmlFor='task-title'>What do you need to do ?</label>
-              <input type="text" id='task-title' { ...titleBind } className='input-style-1' placeholder='Title of your task that you want to do' />
+              <input type="text" id='task-title' { ...titleBind } className='input-style-1' placeholder='Title of your task that you want to do' ref={ titleRef } />
             </div>
             <div className='mb8'>
               <label className='label-style-1' htmlFor='task-note'>Task notes</label>

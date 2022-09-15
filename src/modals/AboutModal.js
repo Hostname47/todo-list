@@ -1,18 +1,38 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import * as ReactDOM from 'react-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { switchAboutModal } from '../features/modal/modalSlice'
 
 function AboutModal() {
   const status = useSelector(state => state.modal.aboutModalStatus)
+  const modalRef = useRef(null)
   const dispatch = useDispatch()
   const switchModal = switchTo => {
     dispatch(switchAboutModal({ status: switchTo }))
   }
+
+  useEffect(() => {
+    function handleEscapeKey(event) {
+      if(event.code === 'Escape') {
+        dispatch(switchAboutModal({ status: false }))
+      }
+    }
+  
+    document.addEventListener('keydown', handleEscapeKey)
+    return () => document.removeEventListener('keydown', handleEscapeKey)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  useEffect(() => {
+    if(status) {
+      modalRef.current.focus()
+    }
+  }, [status])
+  
   console.log('--- Render About Modal ---')
 
   return status && ReactDOM.createPortal((
-    <div className='absolute-full-screen full-center modal-box'>
+    <div className='absolute-full-screen full-center modal-box' ref={ modalRef } tabIndex='0'>
       <div className='absolute-full-screen modal-overlay'></div>
       <div className='relative modal-style-1-container'>
         <div className='title-box'>
