@@ -8,7 +8,7 @@ const SquareButton2 = styled.button`
   fill: ${ props => props.theme.foregroundColor };
 
   &:hover {
-    background-color: #697279;
+    background-color: ${ props => props.theme.squaredbutton.hoverBG };
   }
 `
 

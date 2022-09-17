@@ -1,6 +1,8 @@
 import React, { useEffect, useRef } from 'react'
 import * as ReactDOM from 'react-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import StyledX from '../components/styles/Button/StyledX';
+import StyledModal from '../components/styles/StyledModal';
 import { switchAboutModal } from '../features/modal/modalSlice'
 import useModalEsc from '../hooks/useModalEsc';
 
@@ -25,7 +27,7 @@ function AboutModal() {
   console.log('--- Render About Modal ---')
 
   return status && ReactDOM.createPortal((
-    <div className='absolute-full-screen full-center modal-box' ref={ modalRef } tabIndex='0'>
+    <StyledModal className='absolute-full-screen full-center modal-box' ref={ modalRef } tabIndex='0'>
       <div className='absolute-full-screen modal-overlay'></div>
       <div className='relative modal-style-1-container'>
         <div className='title-box'>
@@ -34,9 +36,9 @@ function AboutModal() {
             <h2 className='title'>About</h2>
           </div>
 
-          <button className='flex' onClick={ () => switchModal(false) }>
-            <svg className="x" viewBox="0 0 24 24"><path d="M20.46.73,12,9.18,3.54.73.72,3.54,9.18,12,.72,20.46l2.82,2.81L12,14.82l8.46,8.45,2.82-2.81L14.82,12l8.46-8.46Z"/></svg>
-          </button>
+          <StyledX onClick={ () => switchModal(false) }>
+            <svg className="x-icon" viewBox="0 0 24 24"><path d="M20.46.73,12,9.18,3.54.73.72,3.54,9.18,12,.72,20.46l2.82,2.81L12,14.82l8.46,8.45,2.82-2.81L14.82,12l8.46-8.46Z"/></svg>
+          </StyledX>
         </div>
         <div className='content-box fs13 line-height-18'>
           <p style={{ marginTop: 0 }}>I started learning <strong>ReactJS</strong> in the 1st august, and after a month exactly (1st septembre), I'm feeling much more comfortable with the basics concepts as well as the advanced ones like Hooks, HOCs, render optimization and so on. I learned the basics as well as the advanced topics following by all the common hooks, but as the saying goes, you cannot say you understand something until you build something including all the techniques offered by the technology and also it should be fine tuned.</p>
@@ -47,7 +49,7 @@ function AboutModal() {
           <p className='full-center bold'><em>~ Mouad Nassri</em></p>
         </div>
       </div>
-    </div>
+    </StyledModal>
   ), document.getElementById('modal'));
 }
 

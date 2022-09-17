@@ -16,14 +16,15 @@ import GlobalStyles from "./components/styles/GlobalStyles";
 import StyledApp from "./components/styles/StyledApp.styled";
 
 function App() {
-  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'dark')
+  const currentTheme = localStorage.getItem('theme') || 'light'
+  const [theme, setTheme] = useState(currentTheme)
 
   const toggleTheme = () => {
-    const newTheme = theme === 'light' ? 'dark' : 'light'
+    const newTheme = currentTheme === 'light' ? 'dark' : 'light'
     setTheme(newTheme)
     localStorage.setItem('theme', newTheme)
   }
-  const themeObject = (localStorage.getItem('theme') || 'light') === 'light' ? lightTheme : darkTheme
+  const themeObject = currentTheme === 'light' ? lightTheme : darkTheme
   
   console.log('--- Render App ---')
   return (

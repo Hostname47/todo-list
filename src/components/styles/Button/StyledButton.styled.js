@@ -5,12 +5,12 @@ const StyledButton = styled.button`
   align-items: center;
   gap: 6px;
   padding: 8px 14px;
-  border: 1px solid #adb9bf;
+  border: 1px solid ${ props => props.theme.styledbutton.borderColor };
   color: ${ props => props.theme.foregroundColor };
   fill: ${ props => props.theme.foregroundColor };
   border-radius: 3px;
   &:hover {
-    background-color: #f2f4f7;
+    background-color: ${ props => props.theme.styledbutton.hoverBG };
   }
   &:disabled,
   &[disabled] {

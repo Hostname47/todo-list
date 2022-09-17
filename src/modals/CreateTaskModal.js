@@ -8,6 +8,8 @@ import { refreshTodolistTasks } from '../features/todolist/todolistSlice';
 import ButtonStyled from '../components/styles/Button/StyledButton.styled';
 import TextButton from '../components/styles/Button/TextButton.styled';
 import useModalEsc from '../hooks/useModalEsc';
+import StyledModal from '../components/styles/StyledModal';
+import StyledX from '../components/styles/Button/StyledX';
 
 function CreateTaskModal() {
   const dispatch = useDispatch()
@@ -91,7 +93,7 @@ function CreateTaskModal() {
   
   console.log('--- Render Create Task Modal ---')
   return status && ReactDOM.createPortal((
-    <div className='absolute-full-screen full-center modal-box'>
+    <StyledModal className='absolute-full-screen full-center modal-box'>
       <div className='absolute-full-screen modal-overlay'></div>
       <div className='relative modal-style-1-container'>
         <div className='title-box'>
@@ -100,9 +102,9 @@ function CreateTaskModal() {
             <h2 className='title'>Add a new task</h2>
           </div>
 
-          <button className='flex' onClick={ handleCreateTaskModalClose }>
-            <svg className="x" viewBox="0 0 24 24"><path d="M20.46.73,12,9.18,3.54.73.72,3.54,9.18,12,.72,20.46l2.82,2.81L12,14.82l8.46,8.45,2.82-2.81L14.82,12l8.46-8.46Z"/></svg>
-          </button>
+          <StyledX onClick={ handleCreateTaskModalClose }>
+            <svg className="x-icon" viewBox="0 0 24 24"><path d="M20.46.73,12,9.18,3.54.73.72,3.54,9.18,12,.72,20.46l2.82,2.81L12,14.82l8.46,8.45,2.82-2.81L14.82,12l8.46-8.46Z"/></svg>
+          </StyledX>
         </div>
         <div className='content-box'>
           <form>
@@ -130,7 +132,7 @@ function CreateTaskModal() {
           </form>
         </div>
       </div>
-    </div>
+    </StyledModal>
   ), document.getElementById('modal'));
 }
 
