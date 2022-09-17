@@ -1,12 +1,12 @@
 import styled from "styled-components";
 
 export const StyledHeader = styled.header`
-  background-color: #eff5fb;
   display: flex;
   align-items: center;
   padding: 0 16px;
   height: 56px;
-  border-bottom: 1px solid #CBDEF2;
+  border-bottom: 1px solid ${props => props.theme.headerBorderBottomColor};
+  transition: all 0.2s ease;
 
   #logo-title {
     font-size: 18px;
@@ -18,7 +18,6 @@ export const StyledHeader = styled.header`
     width: 16px;
     height: 16px;
     padding: 9px 9px;
-    background-color: #E2F1FF;
     border: 1px solid #3497EE;
     border-radius: 50%;
     margin-right: 8px;

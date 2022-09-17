@@ -6,8 +6,8 @@ const StyledButton = styled.button`
   gap: 6px;
   padding: 8px 14px;
   border: 1px solid #adb9bf;
-  color: rgb(20, 20, 20);
-  fill: rgb(20, 20, 20);
+  color: ${ props => props.theme.foregroundColor };
+  fill: ${ props => props.theme.foregroundColor };
   border-radius: 3px;
   &:hover {
     background-color: #f2f4f7;
