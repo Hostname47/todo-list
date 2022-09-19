@@ -8,8 +8,11 @@ import { refreshTodolistTasks } from '../features/todolist/todolistSlice';
 import ButtonStyled from '../components/styles/Button/StyledButton.styled';
 import TextButton from '../components/styles/Button/TextButton.styled';
 import useModalEsc from '../hooks/useModalEsc';
-import StyledModal from '../components/styles/StyledModal';
+import StyledModal from '../components/styles/StyledModal.styled';
 import StyledX from '../components/styles/Button/StyledX';
+import StyledInput from '../components/styles/Input/StyledInput.styled';
+import StyledTextarea from '../components/styles/Input/StyledTextarea.styled';
+import StyledLabel from '../components/styles/StyledLabel.styled';
 
 function CreateTaskModal() {
   const dispatch = useDispatch()
@@ -115,12 +118,12 @@ function CreateTaskModal() {
               </div>
             ) }
             <div className='mb8'>
-              <label className='label-style-1' htmlFor='task-title'>What do you need to do ?</label>
-              <input type="text" id='task-title' { ...titleBind } className='input-style-1' placeholder='Title of your task that you want to do' ref={ titleRef } />
+              <StyledLabel className='label-style-1' htmlFor='task-title'>What do you need to do ?</StyledLabel>
+              <StyledInput type="text" id='task-title' { ...titleBind } className='input-style-1' placeholder='Title of your task that you want to do' ref={ titleRef } />
             </div>
             <div className='mb8'>
-              <label className='label-style-1' htmlFor='task-note'>Task notes</label>
-              <textarea type="text" id='task-note' { ...notesBind } className='input-style-1' placeholder='Task notes'></textarea>
+              <StyledLabel className='label-style-1' htmlFor='task-note'>Task notes</StyledLabel>
+              <StyledTextarea as='textarea' id='task-note' { ...notesBind } className='input-style-1' placeholder='Task notes'></StyledTextarea>
             </div>
             <div className='align-center g8'>
               <ButtonStyled className='move-to-right' onClick={ handleCreateTask } ref={ createButtonRef }>

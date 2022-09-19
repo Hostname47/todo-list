@@ -11,9 +11,6 @@ button {
   padding: 0;
   cursor: pointer;
 }
-input[type=checkbox] {
-  margin: 0;
-}
 
 label {
   display: flex;
@@ -48,29 +45,6 @@ label {
 .fs11 { font-size: 11px; }
 .fs12 { font-size: 12px; }
 .fs13 { font-size: 13px; }
-
-.label-style-1 {
-  font-size: 14px;
-  font-weight: bold;
-  color: #1d2024;
-  margin-bottom: 4px;
-}
-
-.input-style-1 {
-  outline: none;
-  display: flex;
-  padding: 8px;
-  margin: 0;
-  width: 100%;
-  box-sizing: border-box;
-  border-radius: 3px;
-  border: 1px solid rgb(194, 202, 206);
-}
-
-.input-style-1:focus {
-  border-color: #1198ff;
-  outline: 3px solid #1198ff40;
-}
 
 .flat-button-style {
   color: white;

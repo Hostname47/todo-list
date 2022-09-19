@@ -4,11 +4,11 @@ const TextButton = styled.button`
   display: flex;
   align-items: center;
   padding: 8px;
-  color: rgb(38, 38, 38);
+  color: ${ props => props.theme.button.textButton.color };
   border-radius: 3px;
 
   &:hover {
-    color: #000;
+    color: ${ props => props.theme.button.textButton.hoverBG };
   }
 `
 export default TextButton

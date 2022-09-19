@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react'
 import * as ReactDOM from 'react-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import StyledX from '../components/styles/Button/StyledX';
-import StyledModal from '../components/styles/StyledModal';
+import StyledModal from '../components/styles/StyledModal.styled';
 import { switchAboutModal } from '../features/modal/modalSlice'
 import useModalEsc from '../hooks/useModalEsc';
 

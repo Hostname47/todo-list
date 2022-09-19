@@ -18,13 +18,13 @@ const StyledButton = styled.button`
     background-color: #f7f7f7 !important;
   }
   &.green {
-    background-color: #dff9dd;
-    border-color: #a8d0a4;
-    color: #274025;
-    fill: #274025;
+    background-color: ${ props => props.theme.styledbutton.green.backgroundColor };
+    border-color: ${ props => props.theme.styledbutton.green.borderColor };
+    color: ${ props => props.theme.styledbutton.green.color };
+    fill: ${ props => props.theme.styledbutton.green.fill };
   }
   &.green:hover {
-    background-color: #d1eccf;
+    background-color: ${ props => props.theme.styledbutton.green.hoverBG };
   }
 
   .icon {
