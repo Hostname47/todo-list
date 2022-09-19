@@ -42,6 +42,10 @@ export const StyledModal = styled.div`
     margin-top: -26px;
     overflow: hidden;
   }
+
+  .modal-overlay {
+    background-color: ${ props => props.theme.modal.overlayColor };
+  }
 `
 
 export default StyledModal

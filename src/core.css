@@ -175,10 +175,6 @@ label {
   fill: #21592f;
 }
 
-.modal-overlay {
-  background-color: #1d2124a8;
-}
-
 .rotate {
   animation: spin 1.4s linear infinite;
   -webkit-animation: spin 1.4s linear infinite;

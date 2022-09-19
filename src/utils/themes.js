@@ -16,17 +16,19 @@ export const lightTheme = {
     }
   },
   squaredbutton: {
-    hoverBG: '#d4dfe8'
+    hoverBG: '#e2e6ec',
+    fill: '#111213'
   },
   modal: {
     header: {
-      backgroundColor: '#f3f6f9',
+      backgroundColor: 'white',
       fill: '#111213',
       borderBottomColor: '#cbdef2'
     },
     content: {
       backgroundColor: 'white',
-    }
+    },
+    overlayColor: '#1d2124a8'
   },
   x: {
     hoverBG: '#dce5ee'
@@ -40,6 +42,11 @@ export const lightTheme = {
       color: 'rgb(38, 38, 38)',
       hoverBG: '#000'
     }
+  },
+  todolist: {
+    backgroundColor: '#f9f9f9',
+    borderColor: '#bdc7d5',
+    taskDoneColor: '#4d535e'
   }
 }
 
@@ -61,7 +68,8 @@ export const darkTheme = {
     }
   },
   squaredbutton: {
-    hoverBG: '#40464a'
+    hoverBG: '#40464a',
+    fill: 'white'
   },
   modal: {
     header: {
@@ -71,7 +79,8 @@ export const darkTheme = {
     },
     content: {
       backgroundColor: '#1f2022',
-    }
+    },
+    overlayColor: '#3f4d5780'
   },
   x: {
     hoverBG: '#24262B'
@@ -85,5 +94,10 @@ export const darkTheme = {
       color: 'rgb(196, 196, 196)',
       hoverBG: '#fff'
     }
+  },
+  todolist: {
+    backgroundColor: '#242628',
+    borderColor: '#15181c',
+    taskDoneColor: '#9ba5bb'
   }
 }

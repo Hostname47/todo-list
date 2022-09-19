@@ -14,6 +14,7 @@ import { ThemeProvider } from "styled-components";
 import { darkTheme, lightTheme } from "./utils/themes";
 import GlobalStyles from "./components/styles/GlobalStyles";
 import StyledApp from "./components/styles/StyledApp.styled";
+import Body from "./components/Body";
 
 function App() {
   const currentTheme = localStorage.getItem('theme') || 'light'
@@ -33,8 +34,10 @@ function App() {
         <StyledApp>
           <GlobalStyles />
           <Header toggleTheme={ toggleTheme } />
-          <Messages />
-          <Todolist />
+          <Body>
+            <Messages />
+            <Todolist />
+          </Body>
           <AboutModal />
           <CreateTaskModal />
           <EditTaskModal />

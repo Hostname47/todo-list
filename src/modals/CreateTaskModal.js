@@ -34,10 +34,10 @@ function CreateTaskModal() {
     if(title === '') {
       setError('Task title field is required')
       return;
-    } else if(title.length > 40) {
+    } else if(title.length > 140) {
       setError('Task title is too long')
       return;
-    } else if(notes.length > 40) {
+    } else if(notes.length > 400) {
       setError('Task notes is too long')
       return;
     }

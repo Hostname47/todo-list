@@ -3,6 +3,7 @@ import { createGlobalStyle } from "styled-components";
 const GlobalStyles = createGlobalStyle`
   body {
     color: ${ (props) => props.theme.foregroundColor };
+    fill: ${ (props) => props.theme.foregroundColor };
     background-color: ${ (props) => props.theme.backgroundColor };
     transition: background-color 0.2s ease;
   }
