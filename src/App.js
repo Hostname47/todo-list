@@ -15,6 +15,9 @@ import { darkTheme, lightTheme } from "./utils/themes";
 import GlobalStyles from "./components/styles/GlobalStyles";
 import StyledApp from "./components/styles/StyledApp.styled";
 import Body from "./components/Body";
+import { Route, Routes } from "react-router-dom";
+import Home from "./components/pages/Home";
+import Notes from "./components/pages/Notes";
 
 function App() {
   const currentTheme = localStorage.getItem('theme') || 'light'
@@ -34,10 +37,12 @@ function App() {
         <StyledApp>
           <GlobalStyles />
           <Header toggleTheme={ toggleTheme } />
-          <Body>
-            <Messages />
-            <Todolist />
-          </Body>
+
+          <Routes>
+            <Route path='/' element={ <Home /> } />
+            <Route path='notes' element={ <Notes /> } />
+          </Routes>
+
           <AboutModal />
           <CreateTaskModal />
           <EditTaskModal />

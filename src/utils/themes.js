@@ -52,7 +52,7 @@ export const lightTheme = {
 
 export const darkTheme = {
   name: 'dark',
-  foregroundColor: '#e1e1e1',
+  foregroundColor: '#eee',
   backgroundColor: '#353535',
   headerBackgroundColor: '#252728',
   headerBorderBottomColor: '#1e1e1e',
