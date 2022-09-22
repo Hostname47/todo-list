@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import Header from "./components/Header";
-import Messages from "./components/Messages";
-import Todolist from "./components/Todolist";
 import './css/App.css'
 // Import modals components
 import AboutModal from './modals/AboutModal'
@@ -14,10 +12,10 @@ import { ThemeProvider } from "styled-components";
 import { darkTheme, lightTheme } from "./utils/themes";
 import GlobalStyles from "./components/styles/GlobalStyles";
 import StyledApp from "./components/styles/StyledApp.styled";
-import Body from "./components/Body";
 import { Route, Routes } from "react-router-dom";
 import Home from "./components/pages/Home";
 import Notes from "./components/pages/Notes";
+import NotFound from "./components/pages/NotFound";
 
 function App() {
   const currentTheme = localStorage.getItem('theme') || 'light'
@@ -41,6 +39,7 @@ function App() {
           <Routes>
             <Route path='/' element={ <Home /> } />
             <Route path='notes' element={ <Notes /> } />
+            <Route path='*' element={ <NotFound /> } />
           </Routes>
 
           <AboutModal />

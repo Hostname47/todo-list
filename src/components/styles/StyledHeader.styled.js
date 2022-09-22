@@ -9,18 +9,37 @@ export const StyledHeader = styled.header`
   transition: all 0.2s ease;
 
   #logo-title {
+    white-space: nowrap;
+    overflow: hidden;
     font-size: 18px;
     color: #1a94ff;
     margin: 0;
   }
 
   #logo-icon {
-    width: 16px;
-    height: 16px;
-    padding: 9px 9px;
-    border: 1px solid #3497EE;
+    width: 13px;
+    min-width: 13px;
+    height: 13px;
+    padding: 4px 4px;
+    border: 3px solid #3497EE;
     border-radius: 50%;
-    margin-right: 8px;
+    margin-right: 6px;
+  }
+
+  .primary-menu {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-left: 16px;
+  }
+
+  .primary-menu a {
+    color: ${ props => props.theme.foregroundColor };
+    text-decoration: none;
+  }
+
+  .primary-menu a.active {
+    font-weight: bold;
   }
 `
 
