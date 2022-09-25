@@ -45,6 +45,7 @@ label {
 .fs11 { font-size: 11px; }
 .fs12 { font-size: 12px; }
 .fs13 { font-size: 13px; }
+.fs24 { font-size: 24px; }
 
 .flat-button-style {
   color: white;
@@ -93,6 +94,10 @@ label {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.flex-column {
+  flex-direction: column;
 }
 
 .size8 { width: 8px; height: 8px; }
